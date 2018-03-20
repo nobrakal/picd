@@ -5,6 +5,6 @@ public class TokenString extends Token{
 
   public TokenString(Sym sy, String s){
     super(sy);
-    this.str=s;
+    this.str = s;
   }
 }
