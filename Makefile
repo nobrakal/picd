@@ -1,3 +1,3 @@
 all:
-	jflex src/Lexer.flex
+	jflex -d src/ flex/Lexer.flex
 	javac src/Main.java
