@@ -5,7 +5,7 @@ import src.exceptions.*;
 
 public abstract class Parser<T> {
 
-  protected static LookAhead r;
+  protected static LookAhead1 r;
 
   public abstract T parse() 
       throws Exception, UnexpectedSymbolException, IOException;

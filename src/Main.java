@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import src.parsers.*;
+
 public class Main {
 
     private static void initAndShow(String filename) {
@@ -34,6 +36,8 @@ class MyCanvas extends JComponent {
 
   public MyCanvas(String fname) {
     filename = fname;
+    ShapeParser parser = new ShapeParser(filename);
+
   }
 
   @Override
@@ -53,7 +57,6 @@ class MyCanvas extends JComponent {
       // Reader reader = new FileReader(input);
       // Lexer lexer = new Lexer(reader);
       // LookAhead1 look = new LookAhead1(lexer);
-      // Parser parser = new Parser(look);
       // AST ast = parser.progNonTerm();
       // ast.exec(g2d); 
     }
