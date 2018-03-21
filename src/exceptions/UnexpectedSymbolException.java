@@ -1,5 +1,7 @@
 package src.exceptions;
 
+import src.token.Sym;
+
 public class UnexpectedSymbolException extends LexerException {
 
   public UnexpectedSymbolException (Sym symbol, Sym expected, int line, int col) {
