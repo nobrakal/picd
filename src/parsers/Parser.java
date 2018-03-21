@@ -1,14 +1,14 @@
 package src.parsers;
 
 import src.token.*;
+import src.exceptions.*;
 
-public class Parser {
+public abstract class Parser<T> {
 
-  private LookAhead r;
+  protected static LookAhead r;
 
-  public Parser () {
-
-  }
+  public abstract T parse() 
+      throws Exception, UnexpectedSymbolException, IOException;
 
 }
 

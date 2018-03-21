@@ -1,5 +1,6 @@
 package src.parsers;
 
+import src.exceptions.*;
 import src.token.*;
 
 public LookAhead1 {
