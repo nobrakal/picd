@@ -1,3 +1,5 @@
+package src;
+
 import src.exceptions.*;
 import src.token.*;
 
@@ -25,23 +27,18 @@ import src.token.*;
     if (s == Sym.COLOR) return new TokenColor(value);
     if (s == Sym.INT) return new TokenInt(Integer.parseInt(value));
     if (s == Sym.OP) {
-      if (value.equals("+")) return new TokenOp(Lexer::add);
-      if (value.equals("-")) return new TokenOp(Lexer::sub);
-      if (value.equals("*")) return new TokenOp(Lexer::mul);
-      if (value.equals("/")) return new TokenOp(Lexer::div);
+      if (value.equals("+")) return new TokenOp((a,b)->a+b);
+      if (value.equals("-")) return new TokenOp((a,b)->a-b);
+      if (value.equals("*")) return new TokenOp((a,b)->a*b);
+      if (value.equals("/")) return new TokenOp((a,b)->a/b);
     }
-    return null;
+    throw new LexerException("Unexcepted symbol "+s,yyline(),yycolumn());
   }
-
-  public static int add (int a, int b) { return a + b; }
-  public static int sub (int a, int b) { return a - b; }
-  public static int mul (int a, int b) { return a * b; }
-  public static int div (int a, int b) { return a / b; }
 %}
 
 integer = [0-9]+
 hex = [0-9A-F]
-color = #{hex}{hex}{hex}{hex}{hex}{hex}
+color = #{hex}{6}
 op = "+" | "-" | "/" | "*"
 
 LineTerminator = \r|\n|\r\n
@@ -65,5 +62,4 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 ";"          { return token(Sym.SEMI);}
 
 {WhiteSpace} {}
-[^] {throw new Exception("Unknown char "+yytext());}
-
+[^] {throw new LexerException("Unknown char "+yytext(),yyline(),yycolumn());}
