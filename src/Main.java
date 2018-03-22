@@ -32,34 +32,15 @@ public class Main {
 @SuppressWarnings("serial")
 class MyCanvas extends JComponent {
 
-  String filename;
+  Iterable<Shape> shapes;
 
   public MyCanvas(String fname) {
-    filename = fname;
-    ShapeParser parser = new ShapeParser(filename);
-
+    shapes = new ShapeParser(filename).parse();
   }
 
   @Override
   public void paintComponent(Graphics g) {
-    if (g instanceof Graphics2D)
-    {
-      Graphics2D g2d = (Graphics2D)g;
-
-      // A compléter.
-      // Appelez ici votre analyseur et interpréteur, en leur fournissant
-      // l'objet g2d de type Graphics2D. Ils pourront ainsi appeler les fonctions
-      // g2d.drawCircle, g2d.setColor, etc...
-      //
-      // Par exemple :
-      //
-  	  // File input = new File(filename);
-      // Reader reader = new FileReader(input);
-      // Lexer lexer = new Lexer(reader);
-      // LookAhead1 look = new LookAhead1(lexer);
-      // AST ast = parser.progNonTerm();
-      // ast.exec(g2d); 
-    }
+    drawAll(g, shapes);
   }
 
   /**

@@ -32,7 +32,7 @@ import src.token.*;
       if (value.equals("*")) return new TokenOp((a,b)->a*b);
       if (value.equals("/")) return new TokenOp((a,b)->a/b);
     }
-    throw new LexerException("Unexcepted symbol "+s,yyline(),yycolumn());
+    throw new LexerException("Unexcepted symbol "+s, yyline(), yycolumn());
   }
 %}
 
@@ -62,4 +62,4 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 ";"          { return token(Sym.SEMI);}
 
 {WhiteSpace} {}
-[^] {throw new LexerException("Unknown char "+yytext(),yyline(),yycolumn());}
+[^] {throw new LexerException("Unknown char " + yytext(), yyline(), yycolumn());}
