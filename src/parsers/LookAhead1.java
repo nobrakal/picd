@@ -22,6 +22,14 @@ public class LookAhead1 {
     return current.sym == s;
   }
 
+  public boolean are (Sym ... ss){
+    for(Sym s: ss){
+      if(current.sym ==s)
+        return true;
+    }
+    return false;
+  }
+
   public Token pop (Sym s) 
       throws UnexpectedSymbolException {
     if (!is(s)) throw new UnexpectedSymbolException(s, current, lexer.yyline(), lexer.yycolumn());

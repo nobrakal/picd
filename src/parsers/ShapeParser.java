@@ -16,7 +16,15 @@ public class ShapeParser extends Parser<LinkedList<Shape>> {
   }
 
   private void instruction () {
+    if(r.are(Sym.DRAWC, Sym.DRAWR)){
 
+    }
+    else if(r.are(Sym.FILLC, Sym.FILLR)){
+
+    }
+    r.pop(Sym.BEGIN);
+    instruction();
+    r.pop(Sym.END);
   }
 
 }
