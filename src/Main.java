@@ -42,7 +42,7 @@ class MyCanvas extends JComponent {
     catch(Exception e){
       System.out.println(e);
     }
-    ShapeParser parser = new ShapeParser();
+    ASTParser parser = new ASTParser();
 
   }
 
@@ -65,17 +65,6 @@ class MyCanvas extends JComponent {
       // LookAhead1 look = new LookAhead1(lexer);
       // AST ast = parser.progNonTerm();
       // ast.exec(g2d); 
-    }
-  }
-
-  /**
-   * Draw list of shapes on a Graphics2D
-   * @param g The Graphics2D
-   * @param list The Iterable object
-   */
-  private void drawAll(Graphics2D g, Iterable<Shape> list){
-    for(Shape s: list){
-      g.draw(s);
     }
   }
 }

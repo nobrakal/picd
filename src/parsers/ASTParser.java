@@ -8,9 +8,9 @@ import src.token.*;
 import src.exceptions.*;
 import src.ast.*;
 
-public class ShapeParser extends Parser<AST> {
+public class ASTParser extends Parser<AST> {
 
-  public ShapeParser (){
+  public ASTParser (){
   }
 
   public AST parse () {

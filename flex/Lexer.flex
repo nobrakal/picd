@@ -34,6 +34,14 @@ import src.token.*;
     }
     throw new LexerException("Unexcepted symbol "+s,yyline,yycolumn);
   }
+
+  public int yyline(){
+    return this.yyline;
+  }
+
+  public int yycolumn(){
+    return this.yycolumn;
+  }
 %}
 
 integer = [0-9]+
