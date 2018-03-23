@@ -4,7 +4,7 @@ import java.awt.Shape;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
-class InstrShape<S extends Shape> implements Instr {
+public class InstrShape<S extends Shape> implements Instr{
     public final S shape;
     public final Color color;
 

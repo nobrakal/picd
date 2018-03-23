@@ -23,7 +23,7 @@ import src.token.*;
     return new Token(s, yyline, yycolumn);
   }
 
-  public Token token (Sym s, String value) {
+  public Token token (Sym s, String value) throws LexerException {
     if (s == Sym.COLOR) return new TokenColor(value, yyline, yycolumn);
     if (s == Sym.INT) return new TokenInt(Integer.parseInt(value), yyline, yycolumn);
     if (s == Sym.OP) {
@@ -33,6 +33,14 @@ import src.token.*;
       if (value.equals("/")) return new TokenOp((a,b)->a/b, yyline, yycolumn);
     }
     throw new LexerException("Unexcepted symbol "+s,yyline,yycolumn);
+  }
+
+  public int yyline(){
+    return this.yyline;
+  }
+
+  public int yycolumn(){
+    return this.yycolumn;
   }
 %}
 

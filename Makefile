@@ -1,6 +1,6 @@
 all:
 	jflex -d src/ flex/Lexer.flex
-	javac src/Main.java
+	javac **/*.java
 
 clean:
 	rm **/*.class

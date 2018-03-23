@@ -33,11 +33,18 @@ public class Main {
 class MyCanvas extends JComponent {
 
   public MyCanvas(String fname) {
+    try{
+      Parser.init(fname);
+    }
+    catch(Exception e){
+      System.out.println(e);
+    }
+    ASTParser parser = new ASTParser();
+
   }
 
   @Override
   public void paintComponent(Graphics g) {
   }
-
 }
 

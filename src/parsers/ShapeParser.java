@@ -27,7 +27,8 @@ public class ShapeParser extends Parser<AST> {
     return null;
   }
 
-  private void instruction () throws UnexpectedSymbolException {
+  private void instruction ()
+      throws Exception, UnexpectedSymbolException {
     if(r.are(Sym.DRAWC, Sym.DRAWR)){
 
     } else if(r.are(Sym.FILLC, Sym.FILLR)){
