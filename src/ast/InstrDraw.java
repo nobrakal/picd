@@ -4,7 +4,7 @@ import java.awt.Shape;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
-class InstrDraw<S extends Shape> extends InstrShape<S>{
+public class InstrDraw<S extends Shape> extends InstrShape<S>{
 
     public InstrDraw(S shape, Color c){
         super(shape, c);

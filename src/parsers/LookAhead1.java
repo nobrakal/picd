@@ -31,8 +31,17 @@ public class LookAhead1 {
   }
 
   public Token pop (Sym s) 
-      throws UnexpectedSymbolException {
-    if (!is(s)) throw new UnexpectedSymbolException(s, current, lexer.yyline, lexer.yycolumn);
+      throws UnexpectedSymbolException, Exception {
+    if (!is(s)) throw new UnexpectedSymbolException(s, current.sym, lexer.yyline(), lexer.yycolumn());
+    
+    Token t = current;
+    current = lexer.yylex();
+    return t;
+  }
+
+  public Token pops (Sym... ss) 
+      throws UnexpectedSymbolException, Exception {
+    if (!are(ss)) throw new UnexpectedSymbolException(ss[0], current.sym, lexer.yyline(), lexer.yycolumn());//TODO  ss[0] not good
     
     Token t = current;
     current = lexer.yylex();
