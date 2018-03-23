@@ -1,7 +1,9 @@
 package src.ast;
 
+import java.awt.Graphics2D;
+
 // Will be implemented by InstrBEGIN...
 interface Instr{
   //Eval l'instruction
-  public void eval();
+  public void eval(Graphics2D g);
 }

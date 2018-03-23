@@ -14,4 +14,12 @@ public class AST extends LinkedList<AST>{
     for(AST a : asts) add(a);
     this.instr=instr;
   }
+
+  public String toString(){
+    String res=instr + "->\n";
+    for(AST a: this){
+        res+=a;
+    }
+    return res;
+  }
 }
