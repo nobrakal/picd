@@ -23,7 +23,7 @@ import src.token.*;
     return new Token(s);
   }
 
-  public static Token token (Sym s, String value) {
+  public Token token (Sym s, String value) {
     if (s == Sym.COLOR) return new TokenColor(value);
     if (s == Sym.INT) return new TokenInt(Integer.parseInt(value));
     if (s == Sym.OP) {
@@ -32,7 +32,7 @@ import src.token.*;
       if (value.equals("*")) return new TokenOp((a,b)->a*b);
       if (value.equals("/")) return new TokenOp((a,b)->a/b);
     }
-    throw new LexerException("Unexcepted symbol "+s,yyline(),yycolumn());
+    throw new LexerException("Unexcepted symbol "+s,yyline,yycolumn);
   }
 %}
 
@@ -62,4 +62,4 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 ";"          { return token(Sym.SEMI);}
 
 {WhiteSpace} {}
-[^] {throw new LexerException("Unknown char "+yytext(),yyline(),yycolumn());}
+[^] {throw new LexerException("Unknown char "+yytext(),yyline,yycolumn);}

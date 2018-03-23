@@ -12,7 +12,7 @@ public abstract class Parser<T> {
   public abstract T parse() 
       throws Exception, UnexpectedSymbolException, IOException;
 
-  public static void init () 
+  public static void init (String filename) 
       throws Exception, IOException, LexerException {
     r = new LookAhead1(filename);
   }

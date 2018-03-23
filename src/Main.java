@@ -36,7 +36,13 @@ class MyCanvas extends JComponent {
 
   public MyCanvas(String fname) {
     filename = fname;
-    ShapeParser parser = new ShapeParser(filename);
+    try{
+      Parser.init(filename);
+    }
+    catch(Exception e){
+      System.out.println(e);
+    }
+    ShapeParser parser = new ShapeParser();
 
   }
 
