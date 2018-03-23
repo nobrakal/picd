@@ -32,26 +32,12 @@ public class Main {
 @SuppressWarnings("serial")
 class MyCanvas extends JComponent {
 
-  Iterable<Shape> shapes;
-
   public MyCanvas(String fname) {
-    shapes = new ShapeParser(filename).parse();
   }
 
   @Override
   public void paintComponent(Graphics g) {
-    drawAll(g, shapes);
   }
 
-  /**
-   * Draw list of shapes on a Graphics2D
-   * @param g The Graphics2D
-   * @param list The Iterable object
-   */
-  private void drawAll(Graphics2D g, Iterable<Shape> list){
-    for(Shape s: list){
-      g.draw(s);
-    }
-  }
 }
 

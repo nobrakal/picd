@@ -19,20 +19,20 @@ import src.token.*;
 %yylexthrow}
 
 %{
-  public static Token token (Sym s) {
-    return new Token(s);
+  public Token token (Sym s) {
+    return new Token(s, yyline, yycolumn);
   }
 
-  public static Token token (Sym s, String value) {
-    if (s == Sym.COLOR) return new TokenColor(value);
-    if (s == Sym.INT) return new TokenInt(Integer.parseInt(value));
+  public Token token (Sym s, String value) {
+    if (s == Sym.COLOR) return new TokenColor(value, yyline, yycolumn);
+    if (s == Sym.INT) return new TokenInt(Integer.parseInt(value), yyline, yycolumn);
     if (s == Sym.OP) {
-      if (value.equals("+")) return new TokenOp((a,b)->a+b);
-      if (value.equals("-")) return new TokenOp((a,b)->a-b);
-      if (value.equals("*")) return new TokenOp((a,b)->a*b);
-      if (value.equals("/")) return new TokenOp((a,b)->a/b);
+      if (value.equals("+")) return new TokenOp((a,b)->a+b, yyline, yycolumn);
+      if (value.equals("-")) return new TokenOp((a,b)->a-b, yyline, yycolumn);
+      if (value.equals("*")) return new TokenOp((a,b)->a*b, yyline, yycolumn);
+      if (value.equals("/")) return new TokenOp((a,b)->a/b, yyline, yycolumn);
     }
-    throw new LexerException("Unexcepted symbol "+s, yyline(), yycolumn());
+    throw new LexerException("Unexcepted symbol "+s,yyline,yycolumn);
   }
 %}
 
@@ -62,4 +62,4 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 ";"          { return token(Sym.SEMI);}
 
 {WhiteSpace} {}
-[^] {throw new LexerException("Unknown char " + yytext(), yyline(), yycolumn());}
+[^] {throw new LexerException("Unknown char "+yytext(),yyline,yycolumn);}

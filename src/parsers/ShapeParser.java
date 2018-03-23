@@ -1,11 +1,14 @@
 package src.parsers;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.awt.Shape;
 
 import src.token.*;
+import src.exceptions.*;
+import src.ast.*;
 
-public class ShapeParser extends Parser<LinkedList<Shape>> {
+public class ShapeParser extends Parser<AST> {
 
   private LinkedList<Shape> shapes;
 
@@ -14,29 +17,25 @@ public class ShapeParser extends Parser<LinkedList<Shape>> {
       shapes = new LinkedList<>();
   }
 
-  public LinkedList<Shape> parse () {
-    while (!r.isEmpty()) instruction();
-    return shapes;
+  public AST parse () {
+    try{
+      while (!r.isEmpty()) instruction();
+    } catch(Exception e){
+      System.err.println(e.getMessage());
+      System.exit(-1);
+    }
+    return null;
   }
 
-  private void instruction () {
-    if (r.is(Sym.BEGIN)) while (!r.is(Sym.END)) instruction();   
-    else if (r.is(Sym.DRAWC) || r.is(Sym.FILLC)) {
-      if (r.is(Sym.DRAWC)) r.pop(Sym.DRAWC);
-      else r.pop(Sym.FILLC);
-      r.pop(Sym.LPAR);
-      Integer x = new ParserExpr().parse();
-      r.pop(Sym.COMA);
-      Integer y = new ParserExpr().parse();
-      r.pop(Sym.COMA);
-      Integer r = new ParserExpr().parse();
-      r.pop(Sym.COMA);
-      Color color = ((TokenColor)r.pop(Sym.Color)).color;
-      r.pop(Sym.RPAR);
-      shapes.add(new Circle(x, y, r));
-    } else if (r.is(Sym.DRAWR)) {
-      
+  private void instruction () throws UnexpectedSymbolException {
+    if(r.are(Sym.DRAWC, Sym.DRAWR)){
+
+    } else if(r.are(Sym.FILLC, Sym.FILLR)){
+
     }
+    r.pop(Sym.BEGIN);
+    instruction();
+    r.pop(Sym.END);
   }
 
 }
