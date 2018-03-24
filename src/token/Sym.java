@@ -3,10 +3,12 @@ package src.token;
 public enum Sym {
   BEGIN,
   END,
-  DRAWC,
-  FILLC,
-  DRAWR,
-  FILLR,
+
+  DRAW,
+  FILL,
+
+  CIRCLE,
+  RECT,
 
   COLOR,
   INT,

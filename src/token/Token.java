@@ -10,4 +10,8 @@ public class Token{
     this.line   = line;
     this.column = column;
   }
+
+  public String toString () {
+    return sym.toString();
+  }
 }

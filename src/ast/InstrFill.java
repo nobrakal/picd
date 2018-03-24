@@ -4,9 +4,9 @@ import java.awt.Shape;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
-public class InstrFill<S extends Shape> extends InstrShape<S>{
+public class InstrFill extends InstrShape {
 
-    public InstrFill(S shape, Color c){
+    public InstrFill(Shape shape, Color c){
         super(shape, c);
     }
 

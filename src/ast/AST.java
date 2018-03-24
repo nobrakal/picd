@@ -1,5 +1,6 @@
 package src.ast;
 
+import java.awt.Graphics2D;
 import java.util.LinkedList; // Implement Queue
 
 public class AST extends LinkedList<AST> {
@@ -13,6 +14,11 @@ public class AST extends LinkedList<AST> {
   public AST(Instr instr, AST...asts){
     for(AST a : asts) add(a);
     this.instr = instr;
+  }
+
+  public void run (Graphics2D g) {
+    if (instr != null) instr.eval(g);
+    for (AST a: this) a.run(g);
   }
 
   public String toString(){

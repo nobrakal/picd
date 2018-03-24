@@ -3,12 +3,7 @@ package src.parsers;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RectangularShape;
 import java.awt.Color;
-
-import java.util.function.BiFunction;
 
 import src.token.*;
 import src.exceptions.*;
@@ -16,58 +11,43 @@ import src.ast.*;
 
 public class ASTParser extends Parser<AST> {
 
-  public ASTParser (){
+  private AST ast;
+  private ParserExpr parserExpr;
+  private ShapeParser shapeParser;
+
+  public ASTParser () {
+    ast = new AST(null);
+    parserExpr = new ParserExpr();
+    shapeParser = new ShapeParser();
   }
 
   public AST parse () {
     try{
-    while (!r.isEmpty()) instruction();
+      while (!r.isEmpty()) instruction();
+      return ast;
+    } catch(Exception e) {
+      System.err.println(e);
+      System.exit(-1);
     }
-    catch(Exception e){}
     return null;
   }
 
   private void instruction () throws UnexpectedSymbolException, Exception{
-    if(r.are(Sym.DRAWR, Sym.FILLR)){//TODO Simplify
-        BiFunction<Shape,Color,Instr> bf = (r.is(Sym.DRAWR))?InstrDraw::new:InstrFill::new; 
-        r.pops(Sym.DRAWR, Sym.FILLR);
-        r.pop(Sym.LPAR);
-        int x = new ParserExpr().parse();
-        r.pop(Sym.COMA);
-        int y = new ParserExpr().parse();
-        r.pop(Sym.COMA);
-        int w = new ParserExpr().parse();
-        r.pop(Sym.COMA);
-        int h = new ParserExpr().parse();
-        r.pop(Sym.COMA);
-        Color c = Color.BLACK;//TODO parse
-        AST ast = new AST(bf.apply(new Rectangle2D.Double(x,y,w,h),c));
-        r.pop(Sym.LPAR);
-        r.pop(Sym.SEMI);
-   }
-    else if(r.are(Sym.DRAWC, Sym.FILLC)){
-        BiFunction<Shape,Color,Instr> bf = (r.is(Sym.DRAWC))?InstrDraw::new:InstrFill::new; 
-        r.pops(Sym.DRAWC, Sym.FILLC);
-        r.pop(Sym.LPAR);
-        int x = new ParserExpr().parse();
-        r.pop(Sym.COMA);
-        int y = new ParserExpr().parse();
-        r.pop(Sym.COMA);
-        int rad = new ParserExpr().parse();
-        r.pop(Sym.COMA);
-        Color c = Color.BLACK;//TODO parse
-        AST ast = new AST(bf.apply(new Ellipse2D.Double(x,y,rad,rad),c));
-        r.pop(Sym.LPAR);
-        r.pop(Sym.SEMI);
-
+    if (r.is(Sym.DRAW)) {
+      r.pop(Sym.DRAW);
+      Shape s = shapeParser.parse();
+      ast.add(new AST(new InstrDraw(s, Color.black)));
+    } else if (r.is(Sym.FILL)) {
+      r.pop(Sym.FILL);
+      Shape s = shapeParser.parse();
+      ast.add(new AST(new InstrFill(s, Color.black)));
+    } else {
+      r.pop(Sym.BEGIN);
+      while (!r.is(Sym.END)) instruction();
+      r.pop(Sym.END);
     }
-    r.pop(Sym.BEGIN);
-    instruction();
-    r.pop(Sym.END);
+
+    r.pop(Sym.SEMI);
   }
 
-  @FunctionalInterface 
-  interface DeuxDProducer{
-        public RectangularShape create(int x, int y, int w, int h);
-  }
 }

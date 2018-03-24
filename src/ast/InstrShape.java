@@ -4,11 +4,11 @@ import java.awt.Shape;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
-public class InstrShape<S extends Shape> implements Instr{
-    public final S shape;
+public class InstrShape implements Instr {
+    public final Shape shape;
     public final Color color;
 
-    public InstrShape(S shape, Color color){
+    public InstrShape(Shape shape, Color color){
         this.shape = shape;
         this.color = color;
     }

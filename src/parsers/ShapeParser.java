@@ -2,41 +2,51 @@ package src.parsers;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.Shape;
 
 import src.token.*;
 import src.exceptions.*;
 import src.ast.*;
 
-public class ShapeParser extends Parser<AST> {
+public class ShapeParser extends Parser<Shape> {
 
-  private LinkedList<Shape> shapes;
+  private ParserExpr expr;
 
-  public ShapeParser (String filename)
-      throws Exception, IOException, LexerException {
-      shapes = new LinkedList<>();
+  public ShapeParser () {
+    expr = new ParserExpr();
   }
 
-  public AST parse () {
-    try{
-      while (!r.isEmpty()) instruction();
-    } catch(Exception e){
-      System.err.println(e.getMessage());
-      System.exit(-1);
-    }
-    return null;
-  }
-
-  private void instruction ()
+  public Shape parse () 
       throws Exception, UnexpectedSymbolException {
-    if(r.are(Sym.DRAWC, Sym.DRAWR)){
-
-    } else if(r.are(Sym.FILLC, Sym.FILLR)){
-
+    if (r.is(Sym.CIRCLE)) {
+      r.pop(Sym.CIRCLE);
+      r.pop(Sym.LPAR);
+      int x = expr.parse();
+      r.pop(Sym.COMA);
+      int y = expr.parse();
+      r.pop(Sym.COMA);
+      int rad = expr.parse();
+      r.pop(Sym.COMA);
+      r.pop(Sym.COLOR);
+      r.pop(Sym.RPAR);
+      return new Ellipse2D.Double(x, y, rad, rad);
     }
-    r.pop(Sym.BEGIN);
-    instruction();
-    r.pop(Sym.END);
+
+    r.pop(Sym.RECT);
+    r.pop(Sym.LPAR);
+    int x = expr.parse();
+    r.pop(Sym.COMA);
+    int y = expr.parse();
+    r.pop(Sym.COMA);
+    int width = expr.parse();
+    r.pop(Sym.COMA);
+    int height = expr.parse();
+    r.pop(Sym.COMA);
+    r.pop(Sym.COLOR);
+    r.pop(Sym.RPAR);
+    return new Rectangle2D.Double(x, y, width, height);
   }
 
 }

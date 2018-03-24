@@ -55,10 +55,10 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 %%
 "Begin"      { return token(Sym.BEGIN);}
 "End"        { return token(Sym.END);}
-"DrawCircle" { return token(Sym.DRAWC);}
-"FillCircle" { return token(Sym.FILLC);}
-"DrawRect"   { return token(Sym.DRAWR);}
-"FillRect"   { return token(Sym.FILLR);}
+"Draw"       { return token(Sym.DRAW);}
+"Fill"       { return token(Sym.FILL);}
+"Rect"       { return token(Sym.RECT);}
+"Circle"     { return token(Sym.CIRCLE);}
 
 {color}      { return token(Sym.COLOR, yytext());}
 {integer}    { return token(Sym.INT, yytext());}

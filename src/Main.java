@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import src.parsers.*;
+import src.ast.AST;
 
 public class Main {
 
@@ -21,10 +22,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                initAndShow(args[0]);
-            }
+        javax.swing.SwingUtilities.invokeLater(() -> {
+          initAndShow(args[0]);
         });
     }
 }
@@ -32,19 +31,23 @@ public class Main {
 @SuppressWarnings("serial")
 class MyCanvas extends JComponent {
 
+  private AST ast;
+
   public MyCanvas(String fname) {
     try{
       Parser.init(fname);
-    }
-    catch(Exception e){
+    } catch(Exception e){
       System.out.println(e);
+      System.exit(-1);
     }
-    ASTParser parser = new ASTParser();
 
+    ASTParser parser = new ASTParser();
+    ast = parser.parse();
   }
 
   @Override
   public void paintComponent(Graphics g) {
+    ast.run((Graphics2D)g);
   }
 }
 
