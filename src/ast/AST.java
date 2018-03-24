@@ -2,8 +2,10 @@ package src.ast;
 
 import java.awt.Graphics2D;
 import java.util.LinkedList; // Implement Queue
+import java.awt.Graphics2D;
 
-public class AST extends LinkedList<AST> {
+@SuppressWarnings("serial")
+public class AST extends LinkedList<AST>{
   public final Instr instr;
 
   public AST(Instr instr){
@@ -26,5 +28,14 @@ public class AST extends LinkedList<AST> {
     for(AST a: this)
       res += a;
     return res;
+  }
+
+  /**
+   * Eval the entier AST
+   * @param g Le Graphics2D
+   */
+  public void eval(Graphics2D g){
+    if (instr != null) instr.eval(g);
+    for(AST a: this) a.eval(g);
   }
 }
