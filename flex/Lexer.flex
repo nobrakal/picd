@@ -8,7 +8,7 @@ import java.awt.Color;
 %public
 %class Lexer
 %unicode
-%type Token
+%type Token<?>
 %line
 %column
 %state YYINITIAL, CONST, READ
@@ -20,11 +20,11 @@ import java.awt.Color;
 %yylexthrow}
 
 %{
-  public Token token (Sym s) {
+  public Token<Sym> token (Sym s) {
     return new Token<Sym>(s, yyline, yycolumn);
   }
 
-  public Token token (Sym s, String value) throws LexerException {
+  public Token<?> token (Sym s, String value) throws LexerException {
     if (s == Sym.COLOR) return new Token<Color>(new Color(Integer.decode(value)), yyline, yycolumn);
     if (s == Sym.INT) return new Token<Integer>(Integer.parseInt(value), yyline, yycolumn);
     if (s == Sym.OP) {

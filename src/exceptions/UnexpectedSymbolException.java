@@ -3,6 +3,7 @@ package src.exceptions;
 import src.token.Sym;
 import src.token.Token;
 
+@SuppressWarnings("serial")
 public class UnexpectedSymbolException extends Exception {
 
   public UnexpectedSymbolException (Token<?> symbol, Class<?> expected) {

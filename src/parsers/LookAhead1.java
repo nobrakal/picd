@@ -35,7 +35,8 @@ public class LookAhead1 {
   public <C> Token<C> pop (Class<C> c) 
       throws UnexpectedSymbolException, Exception {
     if (!is(c)) throw new UnexpectedSymbolException(current, c);
-    
+   
+    @SuppressWarnings({"unchecked"}) //It is in fact checked
     Token<C> t = (Token<C>)current;
     current = lexer.yylex();
     return t;
