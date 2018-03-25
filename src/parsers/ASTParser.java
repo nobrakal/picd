@@ -35,18 +35,18 @@ public class ASTParser extends Parser<AST> {
 
   private void instruction () throws UnexpectedSymbolException, Exception{
     if (r.is(Sym.DRAW)) {
-      r.pop(Sym.DRAW);
+      r.eat(Sym.DRAW);
       Tuple<Shape,Color> tuple = shapeParser.parse();
       ast.add(new AST(new InstrDraw(tuple.fst, tuple.snd)));
     } else if (r.is(Sym.FILL)) {
-      r.pop(Sym.FILL);
+      r.eat(Sym.FILL);
       Tuple<Shape,Color> tuple = shapeParser.parse();
       ast.add(new AST(new InstrFill(tuple.fst, tuple.snd)));
     } else {
-      r.pop(Sym.BEGIN);
+      r.eat(Sym.BEGIN);
       while (!r.is(Sym.END)) instruction();
-      r.pop(Sym.END);
+      r.eat(Sym.END);
     }
-    r.pop(Sym.SEMI);
+    r.eat(Sym.SEMI);
   }
 }

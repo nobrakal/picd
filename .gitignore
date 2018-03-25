@@ -24,3 +24,7 @@ hs_err_pid*
 #FLEX
 src/Lexer.java
 src/Lexer.java~
+
+#MAKEFILE
+sources.txt
+MANIFEST.MF

@@ -2,13 +2,15 @@ package src.parsers;
 
 import java.io.*;
 
+import java.util.function.BiFunction;
+
 import src.exceptions.*;
 import src.token.*;
 import src.Lexer;
 
 public class LookAhead1 {
 
-  private Token current;
+  private Token<?> current;
   private Lexer lexer;
 
   public LookAhead1 (String filename)
@@ -18,35 +20,40 @@ public class LookAhead1 {
     current = lexer.yylex();
   }
 
-  public boolean is (Sym s) {
-    return current.sym == s;
+  public boolean is (Class<?> c) {
+    return c.isInstance(current.getObject());
   }
 
-  public boolean are (Sym ... ss){
-    for(Sym s: ss){
-      if(current.sym ==s)
-        return true;
-    }
-    return false;
+  public boolean is (Sym s){
+    return current.getObject() == s;
   }
 
-  public Token pop (Sym s) 
+  public boolean isToken(Class<?> tok){
+    return current.getClass() == tok;
+  }
+
+  public <C> Token<C> pop (Class<C> c) 
+      throws UnexpectedSymbolException, Exception {
+    if (!is(c)) throw new UnexpectedSymbolException(current, c);
+    
+    Token<C> t = (Token<C>)current;
+    current = lexer.yylex();
+    return t;
+  }
+
+ public BiFunction<Integer,Integer,Integer> popOp () 
+      throws UnexpectedSymbolException, Exception {
+    if (!isToken(TokenOp.class)) throw new UnexpectedSymbolException(current, TokenOp.class);
+    
+    TokenOp t = (TokenOp)current;
+    current = lexer.yylex();
+    return t.fun;
+  }
+
+  public void eat(Sym s) 
       throws UnexpectedSymbolException, Exception {
     if (!is(s)) throw new UnexpectedSymbolException(current, s);
-    
-    Token t = current;
     current = lexer.yylex();
-    return t;
-  }
-
-  public Token pops (Sym... ss) 
-      throws UnexpectedSymbolException, Exception {
-    if (!are(ss)) 
-      throw new UnexpectedSymbolException(current, ss[0]);//TODO  ss[0] not good
-    
-    Token t = current;
-    current = lexer.yylex();
-    return t;
   }
 
   public boolean isEmpty () {

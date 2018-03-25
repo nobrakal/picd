@@ -1,17 +1,25 @@
 package src.token;
 
-public class Token{
+public class Token<O>{
 
-  public final Sym sym;
   public final int line, column;
-  
-  public Token(Sym s, int line, int column){
-    this.sym    = s;
+  protected O object;
+
+  public Token(int line, int column){
     this.line   = line;
     this.column = column;
   }
 
+  public Token(O obj,int line,int column){
+    this(line, column);
+    this.object = obj;
+  }
+
   public String toString () {
-    return sym.toString();
+    return object.getClass().toString();
+  }
+
+  public O getObject(){
+    return object;
   }
 }

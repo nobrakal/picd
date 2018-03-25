@@ -1,6 +1,7 @@
 package src.parsers;
 
 import java.io.IOException;
+import java.util.function.BiFunction;
 
 import src.token.*;
 import src.exceptions.*;
@@ -8,12 +9,12 @@ import src.exceptions.*;
 class ParserExpr extends Parser<Integer>{
 
   public Integer parse() throws Exception, UnexpectedSymbolException, IOException{
-    if(r.is(Sym.INT)) return ((TokenInt)r.pop(Sym.INT)).num;
+    if(r.is(Integer.class)) return r.pop(Integer.class).getObject();
     
-    r.pop(Sym.LPAR);
+    r.eat(Sym.LPAR);
     Integer a = this.parse();
-    Integer res = ((TokenOp)r.pop(Sym.OP)).op.apply(a,this.parse());
-    r.pop(Sym.RPAR);
+    Integer res = r.popOp().apply(a,this.parse());
+    r.eat(Sym.RPAR);
     return res;
   }
 

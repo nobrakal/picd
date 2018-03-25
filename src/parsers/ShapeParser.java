@@ -23,31 +23,31 @@ public class ShapeParser extends Parser<Tuple<Shape,Color>> {
   public Tuple<Shape,Color> parse () 
       throws Exception, UnexpectedSymbolException {
     if (r.is(Sym.CIRCLE)) {
-      r.pop(Sym.CIRCLE);
-      r.pop(Sym.LPAR);
+      r.eat(Sym.CIRCLE);
+      r.eat(Sym.LPAR);
       int x = expr.parse();
-      r.pop(Sym.COMA);
+      r.eat(Sym.COMA);
       int y = expr.parse();
-      r.pop(Sym.COMA);
+      r.eat(Sym.COMA);
       int rad = expr.parse();
-      r.pop(Sym.COMA);
-      Color c = ((TokenColor)r.pop(Sym.COLOR)).color;
-      r.pop(Sym.RPAR);
+      r.eat(Sym.COMA);
+      Color c = r.pop(Color.class).getObject();
+      r.eat(Sym.RPAR);
       return new Tuple<Shape,Color>(new Ellipse2D.Double(x, y, rad, rad),c);
     }
 
-    r.pop(Sym.RECT);
-    r.pop(Sym.LPAR);
+    r.eat(Sym.RECT);
+    r.eat(Sym.LPAR);
     int x = expr.parse();
-    r.pop(Sym.COMA);
+    r.eat(Sym.COMA);
     int y = expr.parse();
-    r.pop(Sym.COMA);
+    r.eat(Sym.COMA);
     int width = expr.parse();
-    r.pop(Sym.COMA);
+    r.eat(Sym.COMA);
     int height = expr.parse();
-    r.pop(Sym.COMA);
-    Color c = ((TokenColor)r.pop(Sym.COLOR)).color;
-    r.pop(Sym.RPAR);
+    r.eat(Sym.COMA);
+    Color c = r.pop(Color.class).getObject();
+    r.eat(Sym.RPAR);
     return new Tuple<Shape,Color>(new Rectangle2D.Double(x, y, width, height),c);
   }
 }

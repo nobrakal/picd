@@ -2,7 +2,6 @@ package src.ast;
 
 import java.awt.Graphics2D;
 import java.util.LinkedList; // Implement Queue
-import java.awt.Graphics2D;
 
 @SuppressWarnings("serial")
 public class AST extends LinkedList<AST>{

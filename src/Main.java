@@ -22,6 +22,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        if(args.length != 1){
+            System.out.println("Please provide a single file to parse");
+            System.exit(-1);
+        }
         javax.swing.SwingUtilities.invokeLater(() -> {
           initAndShow(args[0]);
         });
