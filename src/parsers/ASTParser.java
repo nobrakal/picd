@@ -8,6 +8,7 @@ import java.awt.Color;
 import src.token.*;
 import src.exceptions.*;
 import src.ast.*;
+import src.utils.Tuple;
 
 public class ASTParser extends Parser<AST> {
 
@@ -35,19 +36,17 @@ public class ASTParser extends Parser<AST> {
   private void instruction () throws UnexpectedSymbolException, Exception{
     if (r.is(Sym.DRAW)) {
       r.pop(Sym.DRAW);
-      Shape s = shapeParser.parse();
-      ast.add(new AST(new InstrDraw(s, Color.black)));
+      Tuple<Shape,Color> tuple = shapeParser.parse();
+      ast.add(new AST(new InstrDraw(tuple.fst, tuple.snd)));
     } else if (r.is(Sym.FILL)) {
       r.pop(Sym.FILL);
-      Shape s = shapeParser.parse();
-      ast.add(new AST(new InstrFill(s, Color.black)));
+      Tuple<Shape,Color> tuple = shapeParser.parse();
+      ast.add(new AST(new InstrFill(tuple.fst, tuple.snd)));
     } else {
       r.pop(Sym.BEGIN);
       while (!r.is(Sym.END)) instruction();
       r.pop(Sym.END);
     }
-
     r.pop(Sym.SEMI);
   }
-
 }

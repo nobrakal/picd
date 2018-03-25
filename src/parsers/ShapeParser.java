@@ -5,12 +5,14 @@ import java.util.LinkedList;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.Shape;
+import java.awt.Color;
 
 import src.token.*;
 import src.exceptions.*;
 import src.ast.*;
+import src.utils.Tuple;
 
-public class ShapeParser extends Parser<Shape> {
+public class ShapeParser extends Parser<Tuple<Shape,Color>> {
 
   private ParserExpr expr;
 
@@ -18,7 +20,7 @@ public class ShapeParser extends Parser<Shape> {
     expr = new ParserExpr();
   }
 
-  public Shape parse () 
+  public Tuple<Shape,Color> parse () 
       throws Exception, UnexpectedSymbolException {
     if (r.is(Sym.CIRCLE)) {
       r.pop(Sym.CIRCLE);
@@ -29,9 +31,9 @@ public class ShapeParser extends Parser<Shape> {
       r.pop(Sym.COMA);
       int rad = expr.parse();
       r.pop(Sym.COMA);
-      r.pop(Sym.COLOR);
+      Color c = ((TokenColor)r.pop(Sym.COLOR)).color;
       r.pop(Sym.RPAR);
-      return new Ellipse2D.Double(x, y, rad, rad);
+      return new Tuple<Shape,Color>(new Ellipse2D.Double(x, y, rad, rad),c);
     }
 
     r.pop(Sym.RECT);
@@ -44,9 +46,8 @@ public class ShapeParser extends Parser<Shape> {
     r.pop(Sym.COMA);
     int height = expr.parse();
     r.pop(Sym.COMA);
-    r.pop(Sym.COLOR);
+    Color c = ((TokenColor)r.pop(Sym.COLOR)).color;
     r.pop(Sym.RPAR);
-    return new Rectangle2D.Double(x, y, width, height);
+    return new Tuple<Shape,Color>(new Rectangle2D.Double(x, y, width, height),c);
   }
-
 }
