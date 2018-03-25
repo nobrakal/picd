@@ -21,7 +21,7 @@ import java.awt.Color;
 
 %{
   public Token token (Sym s) {
-    return new TokenSym(s, yyline, yycolumn);
+    return new Token<Sym>(s, yyline, yycolumn);
   }
 
   public Token token (Sym s, String value) throws LexerException {
