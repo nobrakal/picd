@@ -2,10 +2,12 @@ package src.ast;
 
 import java.awt.Graphics2D;
 import java.util.LinkedList; // Implement Queue
+import java.util.HashMap;
 
 @SuppressWarnings("serial")
 public class AST extends LinkedList<AST>{
   public final Instr instr;
+  private final HashMap<String,Integer> vars;
 
   public AST(Instr instr){
     super();

@@ -17,5 +17,9 @@ public enum Sym {
   RPAR,
   SEMI, // semicolon
   COMA, 
-  OP    // operator
+  OP,    // operator
+
+  CONST,
+  EQ,
+  STRING
 };

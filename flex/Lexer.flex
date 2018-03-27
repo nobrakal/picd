@@ -33,6 +33,9 @@ import java.awt.Color;
       if (value.equals("*")) return new TokenOp((a,b)->a*b, yyline, yycolumn);
       if (value.equals("/")) return new TokenOp((a,b)->a/b, yyline, yycolumn);
     }
+    if(s==Sym.STRING){
+      return new Token<String>(value, yyline, yycolumn);
+    }
     throw new LexerException("Unexcepted symbol "+s,yyline,yycolumn);
   }
 
@@ -49,6 +52,7 @@ integer = [0-9]+
 hex = [0-9A-F]
 color = #{hex}{6}
 op = "+" | "-" | "/" | "*"
+id = [a-z][a-zA-Z_]*
 
 LineTerminator = \r|\n|\r\n
 WhiteSpace     = {LineTerminator} | [ \t\f]
@@ -69,6 +73,9 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 ")"          { return token(Sym.RPAR);}
 ","          { return token(Sym.COMA);}
 ";"          { return token(Sym.SEMI);}
+"="          { return token(Sym.EQ);}
+"Const"      { return token(Sym.CONST);}
+{id}         { return token(Sym.STRING,yytext());}
 
 {WhiteSpace} {}
 [^] {throw new LexerException("Unknown char "+yytext(),yyline,yycolumn);}
