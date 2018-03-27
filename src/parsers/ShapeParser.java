@@ -20,16 +20,16 @@ public class ShapeParser extends Parser<Tuple<Shape,Color>> {
     expr = new ParserExpr();
   }
 
-  public Tuple<Shape,Color> parse () 
+  public Tuple<Shape,Color> parse (AST a) 
       throws Exception, UnexpectedSymbolException {
     if (r.is(Sym.CIRCLE)) {
       r.eat(Sym.CIRCLE);
       r.eat(Sym.LPAR);
-      int x = expr.parse();
+      int x = expr.parse(a);
       r.eat(Sym.COMA);
-      int y = expr.parse();
+      int y = expr.parse(a);
       r.eat(Sym.COMA);
-      int rad = expr.parse();
+      int rad = expr.parse(a);
       r.eat(Sym.COMA);
       Color c = r.pop(Color.class).getObject();
       r.eat(Sym.RPAR);
@@ -38,13 +38,13 @@ public class ShapeParser extends Parser<Tuple<Shape,Color>> {
 
     r.eat(Sym.RECT);
     r.eat(Sym.LPAR);
-    int x = expr.parse();
+    int x = expr.parse(a);
     r.eat(Sym.COMA);
-    int y = expr.parse();
+    int y = expr.parse(a);
     r.eat(Sym.COMA);
-    int width = expr.parse();
+    int width = expr.parse(a);
     r.eat(Sym.COMA);
-    int height = expr.parse();
+    int height = expr.parse(a);
     r.eat(Sym.COMA);
     Color c = r.pop(Color.class).getObject();
     r.eat(Sym.RPAR);

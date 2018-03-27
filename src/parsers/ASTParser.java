@@ -22,6 +22,10 @@ public class ASTParser extends Parser<AST> {
     shapeParser = new ShapeParser();
   }
 
+  public AST parse(AST a){
+    return parse();
+  }
+
   public AST parse () {
     try{
       while (!r.isEmpty()) instruction();
@@ -36,18 +40,19 @@ public class ASTParser extends Parser<AST> {
   private void instruction () throws UnexpectedSymbolException, Exception{
     if (r.is(Sym.DRAW)) {
       r.eat(Sym.DRAW);
-      Tuple<Shape,Color> tuple = shapeParser.parse();
+      Tuple<Shape,Color> tuple = shapeParser.parse(ast);
       ast.add(new AST(new InstrDraw(tuple.fst, tuple.snd),ast));
     } else if (r.is(Sym.FILL)) {
       r.eat(Sym.FILL);
-      Tuple<Shape,Color> tuple = shapeParser.parse();
+      Tuple<Shape,Color> tuple = shapeParser.parse(ast);
       ast.add(new AST(new InstrFill(tuple.fst, tuple.snd),ast));
     }
     else if(r.is(Sym.CONST)){
       r.eat(Sym.CONST);
       String id = r.pop(String.class).getObject();
       r.eat(Sym.EQ);
-      int a = new ParserExpr().parse();
+      int a = new ParserExpr().parse(ast);
+      if(!ast.add(id,a)) throw new Exception("Const "+id+" is already defined");
     }
     else {
       r.eat(Sym.BEGIN);

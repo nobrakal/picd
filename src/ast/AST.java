@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.util.LinkedList; // Implement Queue
 import java.util.HashMap;
 
+import src.exceptions.*;
+
 @SuppressWarnings("serial")
 public class AST extends LinkedList<AST>{
   public final Instr instr;
@@ -43,9 +45,15 @@ public class AST extends LinkedList<AST>{
     for(AST a: this) a.eval(g);
   }
 
-  public boolean hasVar(String id){
-    if(vars.containsKey(id)) return true;
-    if(parent != null) return parent.hasVar(id);
-    return false;
+  public int getVar(String id) throws CannotFindSymbolException{ 
+    if(vars.containsKey(id)) return vars.get(id);
+    if(parent != null) return parent.getVar(id);
+    throw new CannotFindSymbolException(id);
+  }
+
+  public boolean add(String id, int a){
+    if(vars.containsKey(id)) return false;
+    vars.put(id,a);
+    return true;
   }
 }
