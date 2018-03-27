@@ -17,7 +17,7 @@ public class ASTParser extends Parser<AST> {
   private ShapeParser shapeParser;
 
   public ASTParser () {
-    ast = new AST(null);
+    ast = new AST(null,null);
     parserExpr = new ParserExpr();
     shapeParser = new ShapeParser();
   }
@@ -37,12 +37,19 @@ public class ASTParser extends Parser<AST> {
     if (r.is(Sym.DRAW)) {
       r.eat(Sym.DRAW);
       Tuple<Shape,Color> tuple = shapeParser.parse();
-      ast.add(new AST(new InstrDraw(tuple.fst, tuple.snd)));
+      ast.add(new AST(new InstrDraw(tuple.fst, tuple.snd),ast));
     } else if (r.is(Sym.FILL)) {
       r.eat(Sym.FILL);
       Tuple<Shape,Color> tuple = shapeParser.parse();
-      ast.add(new AST(new InstrFill(tuple.fst, tuple.snd)));
-    } else {
+      ast.add(new AST(new InstrFill(tuple.fst, tuple.snd),ast));
+    }
+    else if(r.is(Sym.CONST)){
+      r.eat(Sym.CONST);
+      String id = r.pop(String.class).getObject();
+      r.eat(Sym.EQ);
+      int a = new ParserExpr().parse();
+    }
+    else {
       r.eat(Sym.BEGIN);
       while (!r.is(Sym.END)) instruction();
       r.eat(Sym.END);
