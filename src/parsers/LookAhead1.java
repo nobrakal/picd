@@ -61,5 +61,13 @@ public class LookAhead1 {
     return current == null;
   }
 
+  public int getLine(){
+    return current.line;
+  }
+
+  public int getColumn(){
+    return current.column;
+  }
+
 }
 

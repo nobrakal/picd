@@ -56,7 +56,7 @@ public class ASTParser extends Parser<AST> {
       String id = r.pop(String.class).getObject();
       r.eat(Sym.EQ);
       int a = new ParserExpr().parse(ast);
-      if(!ast.add(id,a)) throw new Exception("Const "+id+" is already defined");
+      if(!ast.add(id,a)) throw new ConstAlreadyDefined("Const "+id+" is already defined", r.getLine(), r.getColumn());
     }
     else {
       r.eat(Sym.BEGIN);

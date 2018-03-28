@@ -45,10 +45,10 @@ public class AST extends LinkedList<AST>{
     for(AST a: this) a.eval(g);
   }
 
-  public int getVar(String id) throws CannotFindSymbolException{ 
+  public int getVar(String id, int line, int column) throws CannotFindSymbolException{ 
     if(vars.containsKey(id)) return vars.get(id);
-    if(parent != null) return parent.getVar(id);
-    throw new CannotFindSymbolException(id);
+    if(parent != null) return parent.getVar(id, line, column);
+    throw new CannotFindSymbolException(id, line, column);
   }
 
   public boolean add(String id, int a){
