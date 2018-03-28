@@ -20,7 +20,7 @@ public class ShapeParser extends Parser<Tuple<Shape,Color>> {
     expr = new ParserExpr();
   }
 
-  public Tuple<Shape,Color> parse (AST a) 
+  public Tuple<Shape,Color> parse (AST<?> a) 
       throws Exception, UnexpectedSymbolException {
     if (r.is(Sym.CIRCLE)) {
       r.eat(Sym.CIRCLE);

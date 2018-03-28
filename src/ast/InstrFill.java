@@ -10,8 +10,9 @@ public class InstrFill extends InstrShape {
         super(shape, c);
     }
 
-    public void eval(Graphics2D g){
+    public Void eval(Graphics2D g){
         super.eval(g);
         g.fill(shape);
+        return null;
     }
 }

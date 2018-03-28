@@ -4,7 +4,7 @@ import java.awt.Shape;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
-public class InstrShape implements Instr {
+public class InstrShape implements Instr<Void> {
     public final Shape shape;
     public final Color color;
 
@@ -13,7 +13,8 @@ public class InstrShape implements Instr {
         this.color = color;
     }
 
-    public void eval(Graphics2D g){
+    public Void eval(Graphics2D g){
         g.setPaint(color);
+        return null;
     }
 }

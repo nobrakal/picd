@@ -10,9 +10,6 @@ public enum Sym {
   CIRCLE,
   RECT,
 
-  COLOR,
-  INT,
-
   LPAR,
   RPAR,
   SEMI, // semicolon
@@ -21,5 +18,8 @@ public enum Sym {
 
   CONST,
   EQ,
-  STRING
+
+  IF,
+  THEN,
+  ELSE
 };

@@ -35,7 +35,7 @@ public class Main {
 @SuppressWarnings("serial")
 class MyCanvas extends JComponent {
 
-  private AST ast;
+  private AST<?> ast;
 
   public MyCanvas(String fname) {
     try{

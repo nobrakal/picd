@@ -10,7 +10,7 @@ public abstract class Parser<T> {
   
   protected static LookAhead1 r;
 
-  public abstract T parse(AST current) 
+  public abstract T parse(AST<?> current) 
       throws Exception, UnexpectedSymbolException, IOException;
 
   public static void init (String filename) 

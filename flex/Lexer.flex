@@ -24,19 +24,21 @@ import java.awt.Color;
     return new Token<Sym>(s, yyline, yycolumn);
   }
 
-  public Token<?> token (Sym s, String value) throws LexerException {
-    if (s == Sym.COLOR) return new Token<Color>(new Color(Integer.decode(value)), yyline, yycolumn);
-    if (s == Sym.INT) return new Token<Integer>(Integer.parseInt(value), yyline, yycolumn);
-    if (s == Sym.OP) {
-      if (value.equals("+")) return new TokenOp((a,b)->a+b, yyline, yycolumn);
-      if (value.equals("-")) return new TokenOp((a,b)->a-b, yyline, yycolumn);
-      if (value.equals("*")) return new TokenOp((a,b)->a*b, yyline, yycolumn);
-      if (value.equals("/")) return new TokenOp((a,b)->a/b, yyline, yycolumn);
-    }
-    if(s==Sym.STRING){
+  public TokenOp token(String value){
+    if (value.equals("+")) return new TokenOp((a,b)->a+b, yyline, yycolumn);
+    if (value.equals("-")) return new TokenOp((a,b)->a-b, yyline, yycolumn);
+    if (value.equals("*")) return new TokenOp((a,b)->a*b, yyline, yycolumn);
+    if (value.equals("/")) return new TokenOp((a,b)->a/b, yyline, yycolumn);
+    return null;  
+  }
+
+  public Token<?> token (Class<?> c, String value) throws LexerException {
+    if (c == Color.class) return new Token<Color>(new Color(Integer.decode(value)), yyline, yycolumn);
+    if (c == Integer.class) return new Token<Integer>(Integer.parseInt(value), yyline, yycolumn);
+    if (c == String.class){
       return new Token<String>(value, yyline, yycolumn);
     }
-    throw new LexerException("Unexcepted symbol "+s,yyline,yycolumn);
+    throw new LexerException("Unexcepted symbol "+c,yyline,yycolumn);
   }
 
   public int yyline(){
@@ -65,9 +67,13 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 "Rect"       { return token(Sym.RECT);}
 "Circle"     { return token(Sym.CIRCLE);}
 
-{color}      { return token(Sym.COLOR, yytext());}
-{integer}    { return token(Sym.INT, yytext());}
-{op}         { return token(Sym.OP, yytext());}
+"If"         {return token(Sym.IF);}
+"Then"       {return token(Sym.THEN);}
+"Else"       {return token(Sym.ELSE);}
+
+{color}      { return token(Color.class, yytext());}
+{integer}    { return token(Integer.class, yytext());}
+{op}         { return token(yytext());}
 
 "("          { return token(Sym.LPAR);}
 ")"          { return token(Sym.RPAR);}
@@ -75,7 +81,7 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 ";"          { return token(Sym.SEMI);}
 "="          { return token(Sym.EQ);}
 "Const"      { return token(Sym.CONST);}
-{id}         { return token(Sym.STRING,yytext());}
+{id}         { return token(String.class,yytext());}
 
 {WhiteSpace} {}
 [^] {throw new LexerException("Unknown char "+yytext(),yyline,yycolumn);}
