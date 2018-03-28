@@ -17,7 +17,11 @@ public class ASTParser extends Parser<AST> {
   private ShapeParser shapeParser;
 
   public ASTParser () {
-    ast = new AST(null,null);
+    this(null); 
+  }
+
+  public ASTParser(AST parent){
+    ast = new AST(null,parent);
     parserExpr = new ParserExpr();
     shapeParser = new ShapeParser();
   }
@@ -56,7 +60,9 @@ public class ASTParser extends Parser<AST> {
     }
     else {
       r.eat(Sym.BEGIN);
-      while (!r.is(Sym.END)) instruction();
+      ASTParser astp = new ASTParser(ast);
+      while (!r.is(Sym.END)) astp.instruction();
+      ast.add(astp.ast);
       r.eat(Sym.END);
     }
     r.eat(Sym.SEMI);
