@@ -42,6 +42,7 @@ class MyCanvas extends JComponent {
       Parser.init(fname);
     } catch(Exception e){
       System.out.println(e);
+      e.printStackTrace();
       System.exit(-1);
     }
 

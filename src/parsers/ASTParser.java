@@ -32,16 +32,29 @@ public class ASTParser extends Parser<AST<?>> {
 
   public AST<?> parse () {
     try{
-      while (!r.isEmpty()){
-        AST<?> a = instruction();
-        if(a!=null) ast.add(a);
-      }
+      suiteInstructions();
       return ast;
     } catch(Exception e) {
       System.err.println(e);
       System.exit(-1);
     }
     return null;
+  }
+
+  private void suiteInstructions() throws Exception{
+      while (!r.isEmpty()){
+        AST<?> a = instruction();
+        r.eat(Sym.SEMI);
+        if(a!=null) ast.add(a);
+      }
+  }
+
+  private void suiteInstructionsUntil(Sym e) throws Exception{
+      while (!r.is(e)){
+        AST<?> a = instruction();
+        r.eat(Sym.SEMI);
+        if(a!=null) ast.add(a);
+      }
   }
 
   private AST<?> instruction () throws UnexpectedSymbolException, Exception{
@@ -72,16 +85,19 @@ public class ASTParser extends Parser<AST<?>> {
     }
     else {
       r.eat(Sym.BEGIN);
-      res = parseTo(Sym.END);
+      ASTParser tmp = new ASTParser(ast);
+      tmp.suiteInstructionsUntil(Sym.END);
+      res=tmp.ast;
+      r.eat(Sym.END);
     }
-    r.eat(Sym.SEMI);
     return res;
   }
 
-  private AST<?> parseTo(Sym s) throws Exception{
+  private AST<?> parseFromTo(Sym s,Sym e) throws Exception{
+      r.eat(s);
       ASTParser astp = new ASTParser(ast);
-      while (!r.is(s)) astp.instruction();
-      r.eat(Sym.END);
+      while (!r.is(e)) astp.instruction();
+      r.eat(e);
       return astp.ast;
   }
 }
