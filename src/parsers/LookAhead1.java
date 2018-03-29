@@ -32,6 +32,11 @@ public class LookAhead1 {
     return current.getClass() == tok;
   }
 
+  /**
+   * Generic pop
+   * @param c The class of the excepted object
+   * @return The token containg this object
+   */
   public <C> Token<C> pop (Class<C> c) 
       throws UnexpectedSymbolException, Exception {
     if (!is(c)) throw new UnexpectedSymbolException(current, c);

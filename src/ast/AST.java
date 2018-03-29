@@ -45,6 +45,13 @@ public class AST<O> extends LinkedList<AST<?>>{
     for(AST<?> a: this) a.eval(g);
   }
 
+  /**
+   * Get the variable, if it exists in the HashMap of variables
+   * @param id the Id
+   * @param line the current line
+   * @param column the current column
+   * @return The variable
+   */
   public int getVar(String id, int line, int column) throws CannotFindSymbolException{ 
     if(vars.containsKey(id)) return vars.get(id);
     if(parent != null) return parent.getVar(id, line, column);
