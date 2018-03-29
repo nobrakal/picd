@@ -28,6 +28,12 @@ public class LookAhead1 {
     return current.getObject() == s;
   }
 
+  public boolean are (Sym... symbols) {
+    for (Sym s: symbols)
+      if (is(s)) return true;
+    return false;
+  }
+
   public boolean isToken(Class<?> tok){
     return current.getClass() == tok;
   }
@@ -59,6 +65,10 @@ public class LookAhead1 {
   public void eat(Sym s) 
       throws UnexpectedSymbolException, Exception {
     if (!is(s)) throw new UnexpectedSymbolException(current, s);
+    current = lexer.yylex();
+  }
+
+  public void eat () throws Exception, IOException {
     current = lexer.yylex();
   }
 

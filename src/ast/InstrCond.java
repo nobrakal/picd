@@ -6,10 +6,10 @@ public class InstrCond implements Instr<Boolean>{
   public final int test;
 
   public InstrCond(int test){
-    this.test=test;
+    this.test = test;
   }
 
   public Boolean eval(Graphics2D g){
-    return test==0;
+    return test == 0;
   }
 }

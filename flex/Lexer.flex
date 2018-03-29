@@ -51,10 +51,10 @@ import java.awt.Color;
 %}
 
 integer = [0-9]+
-hex = [0-9A-F]
-color = #{hex}{6}
-op = "+" | "-" | "/" | "*"
-id = [a-z][a-zA-Z_]*
+hex     = [0-9A-F]
+color   = #{hex}{6}
+op      = "+" | "-" | "/" | "*"
+id      = [a-z][a-zA-Z_]*
 
 LineTerminator = \r|\n|\r\n
 WhiteSpace     = {LineTerminator} | [ \t\f]
@@ -81,6 +81,7 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 ";"          { return token(Sym.SEMI);}
 "="          { return token(Sym.EQ);}
 "Const"      { return token(Sym.CONST);}
+"Var"        { return token(Sym.VAR); }
 {id}         { return token(String.class,yytext());}
 
 {WhiteSpace} {}

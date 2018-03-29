@@ -17,6 +17,7 @@ public enum Sym {
   OP,    // operator
 
   CONST,
+  VAR,
   EQ,
 
   IF,

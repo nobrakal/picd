@@ -45,7 +45,7 @@ public class ASTParser extends Parser<AST<?>> {
       while (!r.isEmpty()){
         AST<?> a = instruction();
         r.eat(Sym.SEMI);
-        if(a!=null) ast.add(a);
+        if(a != null) ast.add(a);
       }
   }
 
@@ -67,23 +67,28 @@ public class ASTParser extends Parser<AST<?>> {
       r.eat(Sym.FILL);
       Tuple<Shape,Color> tuple = shapeParser.parse(ast);
       res = new AST<Void>(new InstrFill(tuple.fst, tuple.snd),ast);
-    }
-    else if(r.is(Sym.CONST)){
-      r.eat(Sym.CONST);
+    } else if(r.are(Sym.CONST, Sym.VAR)){
+      boolean cst = r.is(Sym.CONST);
+      r.eat();
       String id = r.pop(String.class).getObject();
       r.eat(Sym.EQ);
-      int a = new ParserExpr().parse(ast);
-      if(!ast.add(id,a)) throw new ConstAlreadyDefined("Const "+id+" is already defined", r.getLine(), r.getColumn());
-    }
-    else if(r.is(Sym.IF)){
+      int value = new ParserExpr().parse(ast);
+      if (cst) {
+        if (!ast.addConst(id, value)) throw new AlreadyDefined(id, r.getLine(), r.getColumn());
+      } else if (!ast.addVar(id, value)) throw new AlreadyDefined(id, r.getLine(), r.getColumn());
+    } else if (r.is(String.class)) {
+      String id = r.pop(String.class).getObject();
+      r.eat(Sym.EQ);
+      Integer value = parserExpr.parse(ast);
+      if (!ast.setVar(id, value)) throw new CannotFindSymbolException (id, r.getLine(), r.getColumn());
+    } else if(r.is(Sym.IF)){
       r.eat(Sym.IF);
       int cond = parserExpr.parse(ast);
       r.eat(Sym.THEN);
       AST<?> left = instruction();
       r.eat(Sym.ELSE);
       res = new ASTCond(new InstrCond(cond),ast,left,instruction());
-    }
-    else {
+    } else {
       r.eat(Sym.BEGIN);
       ASTParser tmp = new ASTParser(ast);
       tmp.suiteInstructionsUntil(Sym.END);
