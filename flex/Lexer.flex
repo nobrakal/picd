@@ -12,7 +12,6 @@ import java.awt.Color;
 %line
 %column
 %state YYINITIAL, CONST, READ
-%debug
 
 %yylexthrow{
     Exception,
@@ -67,9 +66,12 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 "Rect"       { return token(Sym.RECT);}
 "Circle"     { return token(Sym.CIRCLE);}
 
-"If"         {return token(Sym.IF);}
-"Then"       {return token(Sym.THEN);}
-"Else"       {return token(Sym.ELSE);}
+"If"         { return token(Sym.IF);}
+"Then"       { return token(Sym.THEN);}
+"Else"       { return token(Sym.ELSE);}
+
+"While"      { return token(Sym.WHILE); }
+"Do"         { return token(Sym.DO); }
 
 {color}      { return token(Color.class, yytext());}
 {integer}    { return token(Integer.class, yytext());}

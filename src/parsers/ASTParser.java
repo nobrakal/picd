@@ -12,7 +12,6 @@ import src.utils.Tuple;
 
 public class ASTParser extends Parser<AST<?>> {
 
-  private AST<?> ast;
   private ParserExpr parserExpr;
   private ShapeParser shapeParser;
 
@@ -21,88 +20,78 @@ public class ASTParser extends Parser<AST<?>> {
   }
 
   public ASTParser(AST<?> parent){
-    ast = new AST<Void>(null,parent);
     parserExpr = new ParserExpr();
     shapeParser = new ShapeParser();
   }
 
-  public AST<?> parse(AST<?> a){
-    return parse();
+  public AST<?> parse (AST<?> ast) throws Exception {
+    sequence(ast);
+    return ast;
   }
 
-  public AST<?> parse () {
-    try{
-      suiteInstructions();
-      return ast;
-    } catch(Exception e) {
-      System.err.println(e);
-      System.exit(-1);
-    }
-    return null;
+  private AST<?> sequence (AST<?> ast) throws Exception {
+      if (r.isEmpty()) return ast;
+
+      AST<?> next = instruction(ast);
+      r.eat(Sym.SEMI);
+      return sequence(next);
   }
 
-  private void suiteInstructions() throws Exception{
-      while (!r.isEmpty()){
-        AST<?> a = instruction();
-        r.eat(Sym.SEMI);
-        if(a != null) ast.add(a);
-      }
+  private AST<?> sequence(AST<?> ast, Sym e) throws Exception {
+    if (r.isEmpty() || r.is(e)) return ast;
+
+    AST<?> next = instruction(ast);
+    r.eat(Sym.SEMI);
+    return sequence(next, e);
   }
 
-  private void suiteInstructionsUntil(Sym e) throws Exception{
-      while (!r.is(e)){
-        AST<?> a = instruction();
-        r.eat(Sym.SEMI);
-        if(a!=null) ast.add(a);
-      }
-  }
-
-  private AST<?> instruction () throws UnexpectedSymbolException, Exception{
-    AST<?> res=null;
+  private AST<?> instruction (AST<?> ast) throws UnexpectedSymbolException, Exception{
+    System.out.println("line:" + r.getLine() + ": " + ast);
     if (r.is(Sym.DRAW)) {
       r.eat(Sym.DRAW);
       Tuple<Shape,Color> tuple = shapeParser.parse(ast);
-      res = new AST<Void>(new InstrDraw(tuple.fst, tuple.snd),ast);
+      return new AST<Void>(new InstrDraw(tuple.fst, tuple.snd), ast);
     } else if (r.is(Sym.FILL)) {
       r.eat(Sym.FILL);
       Tuple<Shape,Color> tuple = shapeParser.parse(ast);
-      res = new AST<Void>(new InstrFill(tuple.fst, tuple.snd),ast);
+      return new AST<Void>(new InstrFill(tuple.fst, tuple.snd), ast);
     } else if(r.are(Sym.CONST, Sym.VAR)){
       boolean cst = r.is(Sym.CONST);
       r.eat();
       String id = r.pop(String.class).getObject();
       r.eat(Sym.EQ);
-      int value = new ParserExpr().parse(ast);
+      int value = new ParserExpr().parse(ast); // TODO: make ast for vars
       if (cst) {
-        if (!ast.addConst(id, value)) throw new AlreadyDefined(id, r.getLine(), r.getColumn());
-      } else if (!ast.addVar(id, value)) throw new AlreadyDefined(id, r.getLine(), r.getColumn());
+        if (!ast.addConst(id, value))
+          throw new AlreadyDefined(id, r.getLine(), r.getColumn());
+      } else if (!ast.addVar(id, value))
+        throw new AlreadyDefined(id, r.getLine(), r.getColumn());
+      return ast;
     } else if (r.is(String.class)) {
       String id = r.pop(String.class).getObject();
       r.eat(Sym.EQ);
       Integer value = parserExpr.parse(ast);
-      if (!ast.setVar(id, value)) throw new CannotFindSymbolException (id, r.getLine(), r.getColumn());
+      if (!ast.setVar(id, value))
+        throw new CannotFindSymbolException (id, r.getLine(), r.getColumn());
+      return ast;
     } else if(r.is(Sym.IF)){
       r.eat(Sym.IF);
       int cond = parserExpr.parse(ast);
       r.eat(Sym.THEN);
-      AST<?> left = instruction();
+      AST<?> ifTrue = instruction(null);
       r.eat(Sym.ELSE);
-      res = new ASTCond(new InstrCond(cond),ast,left,instruction());
-    } else {
-      r.eat(Sym.BEGIN);
-      ASTParser tmp = new ASTParser(ast);
-      tmp.suiteInstructionsUntil(Sym.END);
-      res=tmp.ast;
-      r.eat(Sym.END);
-    }
-    return res;
+      return new ASTCond(new InstrCond(cond),ast, ifTrue, instruction(null));
+    } else if (r.is(Sym.WHILE)) {
+      r.eat(Sym.WHILE);
+      int cond = parserExpr.parse(ast);
+      r.eat(Sym.DO);
+      return new ASTWhile(new InstrCond(cond), ast, instruction(null));
+    } 
+
+    r.eat(Sym.BEGIN);
+    AST<?> sequence = sequence(ast, Sym.END);
+    r.eat(Sym.END);
+    return sequence;
   }
 
-  private AST<?> parseFromTo(Sym s,Sym e) throws Exception{
-      r.eat(s);
-      ASTParser astp = new ASTParser(ast);
-      while (!r.is(e)) astp.instruction();
-      r.eat(e);
-      return astp.ast;
-  }
 }

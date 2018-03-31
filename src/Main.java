@@ -38,21 +38,22 @@ class MyCanvas extends JComponent {
   private AST<?> ast;
 
   public MyCanvas(String fname) {
+    ast = null;
+
     try{
       Parser.init(fname);
+      ASTParser parser = new ASTParser();
+      ast = parser.parse(new AST<Void>(null, null));
     } catch(Exception e){
       System.out.println(e);
       e.printStackTrace();
       System.exit(-1);
     }
-
-    ASTParser parser = new ASTParser();
-    ast = parser.parse();
   }
 
   @Override
   public void paintComponent(Graphics g) {
-    ast.run((Graphics2D)g);
+    ast.eval((Graphics2D)g);
   }
 }
 

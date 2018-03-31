@@ -7,48 +7,38 @@ import java.util.HashMap;
 import src.exceptions.*;
 
 @SuppressWarnings("serial")
-public class AST<O> extends LinkedList<AST<?>>{
-  public final Instr<O> instr;
+public class AST<O> {
+
+  protected final Instr<O> instr;
   private final HashMap<String,Integer> csts, vars;
-  private final AST<?> parent;
+  protected AST<?> parent, next;
 
-  public AST(Instr<O> instr, AST<?> par){
+  public AST(Instr<O> instr, AST<?> parent) {
     super();
-    this.instr = instr;
-    this.parent = par;
+    this.instr  = instr;
+    this.parent = parent;
+
+    if (parent != null)
+      parent.next = this;
     
-    csts = new HashMap<>();
-    vars = new HashMap<>();
-  }
-
-  public AST(Instr<O> instr, AST<?> par, AST<?>...asts){
-    for(AST<?> a : asts) add(a);
-    this.instr = instr;
-    this.parent = par;
-
     csts = new HashMap<>();
     vars = new HashMap<>();
   }
 
   public void run (Graphics2D g) {
     if (instr != null) instr.eval(g);
-    for (AST<?> a: this) a.run(g);
   }
 
-  public String toString(){
-    String res = instr + "->\n";
-    for(AST<?> a: this)
-      res += a;
-    return res;
+  public void eval (Graphics2D g) {
+    run(g);
+    if (next != null) next.eval(g);
   }
 
-  /**
-   * Eval the entier AST
-   * @param g Le Graphics2D
-   */
-  public void eval(Graphics2D g){
-    if (instr != null) instr.eval(g);
-    for(AST<?> a: this) a.eval(g);
+  public String toString () {
+    return "{" +
+      "instr:" + instr + "," +
+      "next: " + next + "}";
+    
   }
 
   /**

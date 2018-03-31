@@ -6,13 +6,13 @@ import java.awt.Color;
 
 public class InstrDraw extends InstrShape {
 
-    public InstrDraw(Shape shape, Color c){
-        super(shape, c);
-    }
+  public InstrDraw(Shape shape, Color c){
+    super(shape, c);
+  }
 
-    public Void eval(Graphics2D g){
-        super.eval(g);
-        g.draw(shape);
-        return null;
-    }
+  public Void eval(Graphics2D g){
+    super.eval(g);
+    g.draw(shape);
+    return null;
+  }
 }

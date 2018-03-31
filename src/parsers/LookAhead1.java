@@ -25,7 +25,7 @@ public class LookAhead1 {
   }
 
   public boolean is (Sym s){
-    return current.getObject() == s;
+    return current != null && current.getObject() == s;
   }
 
   public boolean are (Sym... symbols) {
@@ -77,11 +77,11 @@ public class LookAhead1 {
   }
 
   public int getLine(){
-    return current.line;
+    return current.line + 1;
   }
 
   public int getColumn(){
-    return current.column;
+    return current.column + 1;
   }
 
 }

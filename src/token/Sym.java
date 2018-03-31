@@ -22,5 +22,8 @@ public enum Sym {
 
   IF,
   THEN,
-  ELSE
+  ELSE,
+
+  WHILE,
+  DO
 };

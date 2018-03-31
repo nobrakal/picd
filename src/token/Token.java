@@ -16,7 +16,7 @@ public class Token<O>{
   }
 
   public String toString () {
-    return object.getClass().toString();
+    return object.toString();
   }
 
   public O getObject(){
