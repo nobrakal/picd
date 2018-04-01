@@ -3,13 +3,13 @@ package src.ast;
 import java.awt.Graphics2D;
 
 public class InstrCond implements Instr<Boolean>{
-  public final int test;
+  public final Expr test;
 
-  public InstrCond(int test){
+  public InstrCond(Expr test){
     this.test = test;
   }
 
   public Boolean eval(Graphics2D g){
-    return test == 0;
+    return test.eval() == 0;
   }
 }
