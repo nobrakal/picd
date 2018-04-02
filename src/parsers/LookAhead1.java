@@ -53,13 +53,13 @@ public class LookAhead1 {
     return t;
   }
 
- public BiFunction<Integer,Integer,Integer> popOp () 
+ public TokenOp popOp () 
       throws UnexpectedSymbolException, Exception {
     if (!isToken(TokenOp.class)) throw new UnexpectedSymbolException(current, TokenOp.class);
     
     TokenOp t = (TokenOp)current;
     current = lexer.yylex();
-    return t.fun;
+    return t;
   }
 
   public void eat(Sym s) 

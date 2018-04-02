@@ -24,10 +24,10 @@ import java.awt.Color;
   }
 
   public TokenOp token(String value){
-    if (value.equals("+")) return new TokenOp((a,b)->a+b, yyline, yycolumn);
-    if (value.equals("-")) return new TokenOp((a,b)->a-b, yyline, yycolumn);
-    if (value.equals("*")) return new TokenOp((a,b)->a*b, yyline, yycolumn);
-    if (value.equals("/")) return new TokenOp((a,b)->a/b, yyline, yycolumn);
+    if (value.equals("+")) return new TokenOp((a,b)->a+b, "+", yyline, yycolumn);
+    if (value.equals("-")) return new TokenOp((a,b)->a-b, "-", yyline, yycolumn);
+    if (value.equals("*")) return new TokenOp((a,b)->a*b, "*", yyline, yycolumn);
+    if (value.equals("/")) return new TokenOp((a,b)->a/b, "/", yyline, yycolumn);
     return null;  
   }
 

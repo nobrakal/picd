@@ -10,4 +10,8 @@ public class ExprLeaf implements Expr{
   public int eval(){
     return this.val;
   }
+
+  public String toString(){
+    return "("+val+")";
+  }
 }

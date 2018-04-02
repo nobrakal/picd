@@ -15,7 +15,8 @@ class ParserExpr extends Parser<Expr>{
     if(r.is(String.class)) return new ExprLeaf(current.getVar(r.pop(String.class).getObject(), r.getLine(), r.getColumn()));
     r.eat(Sym.LPAR);
     Expr a   = parse(current);
-    Expr res = new ExprOp(r.popOp(),a, parse(current));
+    TokenOp op = r.popOp();
+    Expr res = new ExprOp(op.fun,op.str, a,parse(current));
     r.eat(Sym.RPAR);
     return res;
   }
