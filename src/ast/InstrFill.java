@@ -4,15 +4,16 @@ import java.awt.Shape;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
-public class InstrFill extends InstrShape {
+public class InstrFill implements Instr<Void> {
 
-  public InstrFill(Shape shape, Color c){
-    super(shape, c);
+  public final Instr<Shape> is;
+ 
+  public InstrFill(Instr<Shape> is){
+    this.is=is;
   }
 
   public Void eval(Graphics2D g){
-    super.eval(g);
-    g.fill(shape);
+    g.fill(is.eval(g));
     return null;
   }
 }
