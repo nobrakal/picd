@@ -77,10 +77,14 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 "<"          { return tokenOp((a,b)-> (a<b)?1:0,yytext());}
 ">"          { return tokenOp((a,b)-> (a>b)?1:0,yytext());}
 
-"+"         { return tokenOp((a,b)-> a+b, yytext());}
-"-"         { return tokenOp((a,b)-> a-b,yytext());}
-"*"          { return tokenOp((a,b)-> a*b,yytext());}
-"/"          { return tokenOp((a,b)-> a/b,yytext());}
+"+"          { return tokenOp((a,b)-> a+b, yytext());}
+"-"          { return tokenOp((a,b)-> a-b, yytext());}
+"*"          { return tokenOp((a,b)-> a*b, yytext());}
+"/"          { return tokenOp((a,b)-> a/b, yytext());}
+"&"          { return tokenOp((a,b)-> a*b, yytext());}
+"|"          { return tokenOp((a,b)-> a+b -a*b,yytext());}
+"true"       { return token(Integer.class, "1");}
+"false"      { return token(Integer.class, "0");}
 
 "("          { return token(Sym.LPAR);}
 ")"          { return token(Sym.RPAR);}
