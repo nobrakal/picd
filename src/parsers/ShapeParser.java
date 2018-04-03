@@ -33,7 +33,7 @@ public class ShapeParser extends Parser<Tuple<Shape,Color>> {
       r.eat(Sym.COMA);
       Color c = r.pop(Color.class).getObject();
       r.eat(Sym.RPAR);
-      return new Tuple<Shape,Color>(new Ellipse2D.Double(x, y, rad, rad),c);
+      return new Tuple<Shape,Color>(new Ellipse2D.Double(x-rad, y-rad, 2*rad, 2*rad),c);
     }
 
     r.eat(Sym.RECT);
