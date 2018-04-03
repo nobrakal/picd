@@ -49,12 +49,12 @@ public class ASTParser extends Parser<AST<?>> {
     System.out.println("line " + r.getLine() + ": " + ast); 
     if (r.is(Sym.DRAW)) {
       r.eat(Sym.DRAW);
-      Tuple<Shape,Color> tuple = shapeParser.parse(ast);
-      return new AST<Void>(new InstrDraw(tuple.fst, tuple.snd), ast);
+      Instr<Shape> instrDraw = shapeParser.parse(ast);
+      return new AST<Void>(new InstrDraw(instrDraw), ast);
     } else if (r.is(Sym.FILL)) {
       r.eat(Sym.FILL);
-      Tuple<Shape,Color> tuple = shapeParser.parse(ast);
-      return new AST<Void>(new InstrFill(tuple.fst, tuple.snd), ast);
+      Instr<Shape> instrFill = shapeParser.parse(ast);
+      return new AST<Void>(new InstrFill(instrFill), ast);
     } else if(r.are(Sym.CONST, Sym.VAR)){
       boolean cst = r.is(Sym.CONST);
       r.eat();
