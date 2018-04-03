@@ -3,6 +3,7 @@ package src;
 import src.exceptions.*;
 import src.token.*;
 import java.awt.Color;
+import java.util.function.BiFunction;
 
 %%
 %public
@@ -23,12 +24,8 @@ import java.awt.Color;
     return new Token<Sym>(s, yyline, yycolumn);
   }
 
-  public TokenOp token(String value){
-    if (value.equals("+")) return new TokenOp((a,b)->a+b, yyline, yycolumn);
-    if (value.equals("-")) return new TokenOp((a,b)->a-b, yyline, yycolumn);
-    if (value.equals("*")) return new TokenOp((a,b)->a*b, yyline, yycolumn);
-    if (value.equals("/")) return new TokenOp((a,b)->a/b, yyline, yycolumn);
-    return null;  
+  public TokenOp tokenOp(BiFunction<Integer,Integer,Integer> fun, String value){
+    return new TokenOp(fun, value, yyline, yycolumn);
   }
 
   public Token<?> token (Class<?> c, String value) throws LexerException {
@@ -52,7 +49,6 @@ import java.awt.Color;
 integer = [0-9]+
 hex     = [0-9A-F]
 color   = #{hex}{6}
-op      = "+" | "-" | "/" | "*"
 id      = [a-z][a-zA-Z_]*
 
 LineTerminator = \r|\n|\r\n
@@ -75,7 +71,16 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 
 {color}      { return token(Color.class, yytext());}
 {integer}    { return token(Integer.class, yytext());}
-{op}         { return token(yytext());}
+
+"<="         { return tokenOp((a,b)-> (a<=b)?1:0,yytext());}
+">="         { return tokenOp((a,b)-> (a>=b)?1:0,yytext());}
+"<"          { return tokenOp((a,b)-> (a<b)?1:0,yytext());}
+">"          { return tokenOp((a,b)-> (a>b)?1:0,yytext());}
+
+"+"         { return tokenOp((a,b)-> a+b, yytext());}
+"-"         { return tokenOp((a,b)-> a-b,yytext());}
+"*"          { return tokenOp((a,b)-> a*b,yytext());}
+"/"          { return tokenOp((a,b)-> a/b,yytext());}
 
 "("          { return token(Sym.LPAR);}
 ")"          { return token(Sym.RPAR);}

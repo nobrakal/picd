@@ -25,11 +25,11 @@ public class ShapeParser extends Parser<Tuple<Shape,Color>> {
     if (r.is(Sym.CIRCLE)) {
       r.eat(Sym.CIRCLE);
       r.eat(Sym.LPAR);
-      int x = expr.parse(a);
+      int x = expr.parse(a).eval();
       r.eat(Sym.COMA);
-      int y = expr.parse(a);
+      int y = expr.parse(a).eval();
       r.eat(Sym.COMA);
-      int rad = expr.parse(a);
+      int rad = expr.parse(a).eval();
       r.eat(Sym.COMA);
       Color c = r.pop(Color.class).getObject();
       r.eat(Sym.RPAR);
@@ -38,13 +38,13 @@ public class ShapeParser extends Parser<Tuple<Shape,Color>> {
 
     r.eat(Sym.RECT);
     r.eat(Sym.LPAR);
-    int x = expr.parse(a);
+    int x = expr.parse(a).eval();
     r.eat(Sym.COMA);
-    int y = expr.parse(a);
+    int y = expr.parse(a).eval();
     r.eat(Sym.COMA);
-    int width = expr.parse(a);
+    int width = expr.parse(a).eval();
     r.eat(Sym.COMA);
-    int height = expr.parse(a);
+    int height = expr.parse(a).eval();
     r.eat(Sym.COMA);
     Color c = r.pop(Color.class).getObject();
     r.eat(Sym.RPAR);
