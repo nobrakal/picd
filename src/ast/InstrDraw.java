@@ -4,15 +4,16 @@ import java.awt.Shape;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
-public class InstrDraw extends InstrShape {
+public class InstrDraw implements Instr<Void> {
 
-  public InstrDraw(Shape shape, Color c){
-    super(shape, c);
+  public final Instr<Shape> is;
+
+  public InstrDraw(Instr<Shape> is){
+    this.is=is;
   }
 
   public Void eval(Graphics2D g){
-    super.eval(g);
-    g.draw(shape);
+    g.draw(is.eval(g));
     return null;
   }
 }
