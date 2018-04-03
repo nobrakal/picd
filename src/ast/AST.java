@@ -11,26 +11,21 @@ public class AST<O> {
 
   protected final Instr<O> instr;
   private final HashMap<String,Integer> csts, vars;
-  protected AST<?> previous, next, parent;
+  protected AST<?> previous, next;
 
-  public AST(Instr<O> instr, AST<?> previous, AST<?> parent) {
+  public AST(Instr<O> instr, AST<?> previous) {
     super();
     this.instr    = instr;
     this.previous = previous;
-    this.parent   = parent;
 
     if (previous != null) {
       previous.next = this;
-      csts = previous.csts;
-      vars = previous.vars;
+      csts = new HashMap<>(previous.csts);
+      vars = new HashMap<>(previous.vars);
     } else {
       csts = new HashMap<>();
       vars = new HashMap<>();
     }
-  }
-
-  public AST(Instr<O> instr, AST<?> previous) {
-    this(instr, previous, null);
   }
 
   public void run (Graphics2D g) {
@@ -59,7 +54,6 @@ public class AST<O> {
   public int getVar(String id, int line, int column) throws CannotFindSymbolException{ 
     if(vars.containsKey(id)) return vars.get(id);
     if (csts.containsKey(id)) return csts.get(id);
-    if (parent != null) return parent.getVar(id, line, column);
     throw new CannotFindSymbolException(id, line, column);
   }
 
@@ -74,7 +68,7 @@ public class AST<O> {
       vars.put(id, value);
       return true;
     }
-    return parent != null ? parent.setVar(id, value) : false;
+    return false;
   }
 
   public boolean addConst(String id, int value){

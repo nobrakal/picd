@@ -89,8 +89,7 @@ public class ASTParser extends Parser<AST<?>> {
     } 
 
     r.eat(Sym.BEGIN);
-    AST<Void> block = new AST<Void>(null, ast, ast);
-    sequence(block, Sym.END);
+    AST<?> block = sequence(new AST<Void>(null, ast), Sym.END);
     r.eat(Sym.END);
     return block;
   }
