@@ -10,6 +10,6 @@ public class InstrCond implements Instr<Boolean>{
   }
 
   public Boolean eval(Graphics2D g){
-    return test.eval() == 0;
+    return test.eval() != 0;
   }
 }
