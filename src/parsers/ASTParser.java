@@ -46,7 +46,7 @@ public class ASTParser extends Parser<AST<?>> {
   }
 
   private AST<?> instruction (AST<?> ast) throws UnexpectedSymbolException, Exception{
-    System.out.println("line:" + r.getLine() + ": " + ast);
+    System.out.println("line " + r.getLine() + ": " + ast); 
     if (r.is(Sym.DRAW)) {
       r.eat(Sym.DRAW);
       Tuple<Shape,Color> tuple = shapeParser.parse(ast);
@@ -89,9 +89,10 @@ public class ASTParser extends Parser<AST<?>> {
     } 
 
     r.eat(Sym.BEGIN);
-    AST<?> sequence = sequence(ast, Sym.END);
+    AST<Void> block = new AST<Void>(null, null, ast);
+    sequence(block, Sym.END);
     r.eat(Sym.END);
-    return sequence;
+    return block;
   }
 
 }

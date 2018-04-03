@@ -11,18 +11,26 @@ public class AST<O> {
 
   protected final Instr<O> instr;
   private final HashMap<String,Integer> csts, vars;
-  protected AST<?> parent, next;
+  protected AST<?> previous, next, parent;
 
-  public AST(Instr<O> instr, AST<?> parent) {
+  public AST(Instr<O> instr, AST<?> previous, AST<?> parent) {
     super();
-    this.instr  = instr;
-    this.parent = parent;
+    this.instr    = instr;
+    this.previous = previous;
+    this.parent   = parent;
 
-    if (parent != null)
-      parent.next = this;
-    
-    csts = new HashMap<>();
-    vars = new HashMap<>();
+    if (previous != null) {
+      previous.next = this;
+      csts = previous.csts;
+      vars = previous.vars;
+    } else {
+      csts = new HashMap<>();
+      vars = new HashMap<>();
+    }
+  }
+
+  public AST(Instr<O> instr, AST<?> previous) {
+    this(instr, previous, null);
   }
 
   public void run (Graphics2D g) {
@@ -51,7 +59,7 @@ public class AST<O> {
   public int getVar(String id, int line, int column) throws CannotFindSymbolException{ 
     if(vars.containsKey(id)) return vars.get(id);
     if (csts.containsKey(id)) return csts.get(id);
-    if(parent != null) return parent.getVar(id, line, column);
+    if (parent != null) return parent.getVar(id, line, column);
     throw new CannotFindSymbolException(id, line, column);
   }
 
@@ -66,9 +74,7 @@ public class AST<O> {
       vars.put(id, value);
       return true;
     }
-
-    if (parent == null) return false;
-    return parent.setVar(id, value);
+    return parent != null ? parent.setVar(id, value) : false;
   }
 
   public boolean addConst(String id, int value){
