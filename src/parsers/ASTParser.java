@@ -78,18 +78,18 @@ public class ASTParser extends Parser<AST<?>> {
       r.eat(Sym.IF);
       Expr cond = parserExpr.parse(ast);
       r.eat(Sym.THEN);
-      AST<?> ifTrue = instruction(null);
+      AST<?> ifTrue = instruction(ast);
       r.eat(Sym.ELSE);
-      return new ASTCond(new InstrCond(cond),ast, ifTrue, instruction(null));
+      return new ASTCond(new InstrCond(cond),ast, ifTrue, instruction(ast));
     } else if (r.is(Sym.WHILE)) {
       r.eat(Sym.WHILE);
       Expr cond = parserExpr.parse(ast);
       r.eat(Sym.DO);
-      return new ASTWhile(new InstrCond(cond), ast, instruction(null));
+      return new ASTWhile(new InstrCond(cond), ast, instruction(ast));
     } 
 
     r.eat(Sym.BEGIN);
-    AST<Void> block = new AST<Void>(null, null, ast);
+    AST<Void> block = new AST<Void>(null, ast, ast);
     sequence(block, Sym.END);
     r.eat(Sym.END);
     return block;
