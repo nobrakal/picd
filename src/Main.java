@@ -43,7 +43,7 @@ class MyCanvas extends JComponent {
     try{
       Parser.init(fname);
       ASTParser parser = new ASTParser();
-      ast = parser.parse(new AST<Void>(null, null));
+      ast = parser.parse();
       System.out.println(ast);
     } catch(Exception e) {
       System.out.println(e);
@@ -54,7 +54,12 @@ class MyCanvas extends JComponent {
 
   @Override
   public void paintComponent(Graphics g) {
-    ast.eval((Graphics2D)g);
+    try {
+      ast.eval(new Env((Graphics2D)g));
+    } catch (Exception e) {
+      System.err.println("Error on execution: ");
+      e.printStackTrace();
+    }
   }
 }
 

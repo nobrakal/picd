@@ -12,7 +12,7 @@ import src.exceptions.*;
 import src.ast.*;
 import src.utils.Tuple;
 
-public class ShapeParser extends Parser<Instr<Shape>> {
+public class ShapeParser extends Parser<Shape> {
 
   private ParserExpr expr;
 
@@ -20,34 +20,38 @@ public class ShapeParser extends Parser<Instr<Shape>> {
     expr = new ParserExpr();
   }
 
-  public Instr<Shape> parse (AST<?> ast) 
+  public AST<Shape> parse () 
       throws Exception, UnexpectedSymbolException {
     if (r.is(Sym.CIRCLE)) {
       r.eat(Sym.CIRCLE);
       r.eat(Sym.LPAR);
-      Expr x = expr.parse(ast);
+      Expr x = expr.parse();
       r.eat(Sym.COMA);
-      Expr y = expr.parse(ast);
+      Expr y = expr.parse();
       r.eat(Sym.COMA);
-      Expr rad = expr.parse(ast);
+      Expr rad = expr.parse();
       r.eat(Sym.COMA);
       Color c = r.pop(Color.class).getObject();
       r.eat(Sym.RPAR);
-      return new InstrShape(Ellipse2D.Double::new,new ExprOp((a,b)->a-b,"-",x,rad), new ExprOp((a,b) -> a-b,"-",y,rad),new ExprOp((a,b)->a*b,"*", new ExprLeaf(2),rad),new ExprOp((a,b)->a*b,"*",new ExprLeaf(2),rad),c);
+      return new ASTShape(Ellipse2D.Double::new,
+                  new ExprOp((a,b)->a-b,"-",x,rad),
+                  new ExprOp((a,b) -> a-b,"-",y,rad),
+                  new ExprOp((a,b)->a*b,"*", new ExprLeaf.Int(2),rad),
+                  new ExprOp((a,b)->a*b,"*",new ExprLeaf.Int(2),rad),c);
     }
 
     r.eat(Sym.RECT);
     r.eat(Sym.LPAR);
-    Expr x = expr.parse(ast);
+    Expr x = expr.parse();
     r.eat(Sym.COMA);
-    Expr y = expr.parse(ast);
+    Expr y = expr.parse();
     r.eat(Sym.COMA);
-    Expr width = expr.parse(ast);
+    Expr width = expr.parse();
     r.eat(Sym.COMA);
-    Expr height = expr.parse(ast);
+    Expr height = expr.parse();
     r.eat(Sym.COMA);
     Color c = r.pop(Color.class).getObject();
     r.eat(Sym.RPAR);
-    return new InstrShape(Rectangle2D.Double::new,x, y, width, height,c);
+    return new ASTShape(Rectangle2D.Double::new,x, y, width, height,c);
   }
 }

@@ -1,5 +1,7 @@
 package src.ast;
 
-public interface Expr{
-  public int eval();
+import src.Env;
+
+public abstract class Expr extends AST<Integer> {
+
 }

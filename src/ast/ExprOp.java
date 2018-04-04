@@ -2,21 +2,23 @@ package src.ast;
 
 import java.util.function.BiFunction;
 
-public class ExprOp implements Expr{
+import src.Env;
+
+public class ExprOp extends Expr {
 
   public final BiFunction<Integer,Integer,Integer> op;
   public final String str;
   public final Expr left, right;
 
   public ExprOp(BiFunction<Integer,Integer,Integer> op, String str, Expr left, Expr right){
-    this.op=op;
-    this.left=left;
-    this.right=right;
-    this.str= str;
+    this.op    = op;
+    this.left  = left;
+    this.right = right;
+    this.str   = str;
   }
 
-  public int eval(){
-    return this.op.apply(left.eval(),right.eval());
+  public Integer eval(Env e) throws Exception {
+    return this.op.apply(left.eval(e), right.eval(e));
   }
 
   public String toString(){

@@ -1,21 +1,22 @@
 package src.ast;
 
-import java.awt.Graphics2D;
+import src.Env;
 
 @SuppressWarnings("serial")
-public class ASTCond extends AST<Boolean>{
+public class ASTCond extends AST<Void>{
 
-  private final AST<?> ifTrue, otherwise;
+  private final AST<Boolean> cond;
+  private final AST<Void> ifTrue, otherwise;
 
-  public ASTCond(Instr<Boolean> instr, AST<?> parent, AST<?> ifTrue, AST<?> otherwise) {
-    super(instr, parent);
-
+  public ASTCond(AST<Boolean> cond, AST<Void> ifTrue, AST<Void> otherwise) {
+    this.cond      = cond;
     this.ifTrue    = ifTrue;
     this.otherwise = otherwise;
   }
 
-  public void run (Graphics2D g) {
-    if (instr.eval(g)) ifTrue.run(g);
-    else otherwise.run(g);
+  public Void eval (Env e) throws Exception {
+    if (cond.eval(e)) ifTrue.eval(e);
+    else otherwise.eval(e);
+    return null;
   }
 }

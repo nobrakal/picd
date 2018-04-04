@@ -10,88 +10,88 @@ import src.exceptions.*;
 import src.ast.*;
 import src.utils.Tuple;
 
-public class ASTParser extends Parser<AST<?>> {
+public class ASTParser extends Parser<Void> {
 
   private ParserExpr parserExpr;
   private ShapeParser shapeParser;
 
-  public ASTParser () {
-    this(null); 
-  }
-
-  public ASTParser(AST<?> parent){
+  public ASTParser(){
     parserExpr = new ParserExpr();
     shapeParser = new ShapeParser();
   }
 
-  public AST<?> parse (AST<?> ast) throws Exception {
-    sequence(ast);
-    return ast;
+  public AST<Void> parse () throws Exception {
+    return new ASTSequence(sequence());
   }
 
-  private AST<?> sequence (AST<?> ast) throws Exception {
-      if (r.isEmpty()) return ast;
-
-      AST<?> next = instruction(ast);
+  private LinkedList<AST<Void>> sequence () throws Exception {
+    LinkedList<AST<Void>> seq = new LinkedList<>();
+    while (!r.isEmpty()) {
+      seq.add(instruction());
       r.eat(Sym.SEMI);
-      return sequence(next);
+    }
+
+    return seq;
   }
 
-  private AST<?> sequence(AST<?> ast, Sym e) throws Exception {
-    if (r.isEmpty() || r.is(e)) return ast;
+  private LinkedList<AST<Void>> sequence(Sym e) throws Exception {
+    LinkedList<AST<Void>> seq = new LinkedList<>();
+    while (!r.isEmpty() && !r.is(e)) {
+      seq.add(instruction());
+      r.eat(Sym.SEMI);
+    }
 
-    AST<?> next = instruction(ast);
-    r.eat(Sym.SEMI);
-    return sequence(next, e);
+    return seq;
   }
 
-  private AST<?> instruction (AST<?> ast) throws UnexpectedSymbolException, Exception{
-    System.out.println("line " + r.getLine() + ": " + ast); 
-    if (r.is(Sym.DRAW)) {
-      r.eat(Sym.DRAW);
-      Instr<Shape> instrDraw = shapeParser.parse(ast);
-      return new AST<Void>(new InstrDraw(instrDraw), ast);
-    } else if (r.is(Sym.FILL)) {
-      r.eat(Sym.FILL);
-      Instr<Shape> instrFill = shapeParser.parse(ast);
-      return new AST<Void>(new InstrFill(instrFill), ast);
-    } else if(r.are(Sym.CONST, Sym.VAR)){
-      boolean cst = r.is(Sym.CONST);
-      r.eat();
-      String id = r.pop(String.class).getObject();
-      r.eat(Sym.EQ);
-      Expr value = new ParserExpr().parse(ast);
-      if (cst) {
-        if (!ast.addConst(id, value.eval()))
-          throw new AlreadyDefined(id, r.getLine(), r.getColumn());
-      } else if (!ast.addVar(id, value.eval()))
-        throw new AlreadyDefined(id, r.getLine(), r.getColumn());
-      return ast;
-    } else if (r.is(String.class)) {
-      String id = r.pop(String.class).getObject();
-      r.eat(Sym.EQ);
-      Expr value = parserExpr.parse(ast);
-      if (!ast.setVar(id, value.eval()))
-        throw new CannotFindSymbolException (id, r.getLine(), r.getColumn());
-      return ast;
-    } else if(r.is(Sym.IF)){
+  private AST<Void> instruction () throws UnexpectedSymbolException, Exception {
+    if (r.are(Sym.DRAW, Sym.FILL)) return shape();
+    else if(r.are(Sym.CONST, Sym.VAR)) return declaration();
+    else if (r.is(String.class)) return affectation();
+    else if(r.is(Sym.IF)){
       r.eat(Sym.IF);
-      Expr cond = parserExpr.parse(ast);
+      Expr cond = parserExpr.parse();
       r.eat(Sym.THEN);
-      AST<?> ifTrue = instruction(ast);
+      AST<Void> ifTrue = instruction();
       r.eat(Sym.ELSE);
-      return new ASTCond(new InstrCond(cond),ast, ifTrue, instruction(ast));
+      return new ASTCond(new ASTBoolean(cond), ifTrue, instruction());
     } else if (r.is(Sym.WHILE)) {
       r.eat(Sym.WHILE);
-      Expr cond = parserExpr.parse(ast);
+      Expr cond = parserExpr.parse();
       r.eat(Sym.DO);
-      return new ASTWhile(new InstrCond(cond), ast, instruction(ast));
+      return new ASTWhile(new ASTBoolean(cond), instruction());
     } 
 
     r.eat(Sym.BEGIN);
-    AST<?> block = sequence(new AST<Void>(null, ast), Sym.END);
+    ASTSequence block = new ASTSequence(sequence(Sym.END));
     r.eat(Sym.END);
     return block;
+  }
+
+  private AST<Void> shape () throws Exception {
+    // assert Sym.DRAW or Sym.FILL
+    boolean draw = r.is(Sym.DRAW);
+    r.eat();
+    AST<Shape> shp = shapeParser.parse();
+    return draw ? new ASTDraw(shp) : new ASTFill(shp);
+  }
+
+  private AST<Void> declaration () throws Exception {
+    // assert Sym.VAR or Sym.CONST
+    boolean cst = r.is(Sym.CONST);
+    r.eat();
+    String id = r.pop(String.class).getObject();
+    r.eat(Sym.EQ);
+    Expr value = parserExpr.parse();
+    return cst ? new ASTVar.ConstDeclaration(id, value) : 
+                 new ASTVar.VarDeclaration(id, value); 
+  }
+
+  private AST<Void> affectation () throws Exception {
+    String id = r.pop(String.class).getObject();
+    r.eat(Sym.EQ);
+    Expr value = parserExpr.parse();
+    return new ASTVar.VarAffectation(id, value);
   }
 
 }

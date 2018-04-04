@@ -1,20 +1,24 @@
 package src.ast;
 
-import java.awt.Graphics2D;
+import src.Env;
 
 @SuppressWarnings("serial")
-public class ASTWhile extends AST<Boolean> {
+public class ASTWhile extends AST<Void> {
 
-  private final AST<?> loop;
+  private final AST<Boolean> cond;
+  private final AST<Void> loop;
 
-  public ASTWhile (Instr<Boolean> cond, AST<?> parent, AST<?> loop) {
-    super(cond, parent);
-
+  public ASTWhile (AST<Boolean> cond, AST<Void> loop) {
+    this.cond = cond;
     this.loop = loop;
   }
 
-  public void run (Graphics2D g) {
-    while (!instr.eval(g)) loop.run(g);
+  public Void eval (Env e) throws Exception {
+    while (cond.eval(e)) {
+      System.out.println(e);
+      loop.eval(e);
+    }
+    return null;
   }
 
 }
