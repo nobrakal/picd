@@ -50,11 +50,11 @@ public class ASTParser extends Parser<AST<?>> {
     if (r.is(Sym.DRAW)) {
       r.eat(Sym.DRAW);
       Instr<Shape> instrDraw = shapeParser.parse(ast);
-      return new AST<Void>(new InstrDraw(instrDraw), ast);
+      return new AST<Void>(new InstrDoGraphic((g)->g::draw, instrDraw), ast);
     } else if (r.is(Sym.FILL)) {
       r.eat(Sym.FILL);
       Instr<Shape> instrFill = shapeParser.parse(ast);
-      return new AST<Void>(new InstrFill(instrFill), ast);
+      return new AST<Void>(new InstrDoGraphic((g)->g::fill,instrFill), ast);
     } else if(r.are(Sym.CONST, Sym.VAR)){
       boolean cst = r.is(Sym.CONST);
       r.eat();
