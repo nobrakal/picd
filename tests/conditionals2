@@ -1,11 +1,11 @@
 Const x = 50;
 
-If ((x * 2) > 120) Then
+If ((x * 2) < 120)  Then
   FillRect(40, 40, 70, 70, #FF0000)
 Else
   FillRect(180, 200, 43, 42, #FFFF00);
 
-If (x - x) Then
+If ((x - x) >= 1) Then
   If (x * 4) Then
     FillRect(280, 100, 50, 120, #FFFF00)
   Else Begin
@@ -17,7 +17,7 @@ If (x - x) Then
   End
 Else Begin
   FillRect(400, 300, 70, 70, #FF0000);
-  If (x * 0) Then Begin
+  If ((x * 0) & true) Then Begin
     FillCircle(40, 40, 120, #FFFF00);
   End Else Begin
     FillRect(410, 310, 50, 50, #0000FF);
