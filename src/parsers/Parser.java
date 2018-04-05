@@ -18,5 +18,10 @@ public abstract class Parser<T> {
     r = new LookAhead1(filename);
   }
 
+  public AST<T> parse(Sym s)  throws Exception, UnexpectedSymbolException, IOException{
+    AST<T> ast = parse();
+    r.eat(s);
+    return ast;
+  }
 }
 

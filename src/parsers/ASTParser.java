@@ -50,15 +50,13 @@ public class ASTParser extends Parser<Void> {
     else if (r.is(String.class)) return affectation();
     else if(r.is(Sym.IF)){
       r.eat(Sym.IF);
-      AST<Integer> cond = parserExpr.parse();
-      r.eat(Sym.THEN);
+      AST<Integer> cond = parserExpr.parse(Sym.THEN);
       AST<Void> ifTrue = instruction();
       r.eat(Sym.ELSE);
       return new ASTCond(new ASTBoolean(cond), ifTrue, instruction());
     } else if (r.is(Sym.WHILE)) {
       r.eat(Sym.WHILE);
-      AST<Integer> cond = parserExpr.parse();
-      r.eat(Sym.DO);
+      AST<Integer> cond = parserExpr.parse(Sym.DO);
       return new ASTWhile(new ASTBoolean(cond), instruction());
     } 
 

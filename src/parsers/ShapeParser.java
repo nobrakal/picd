@@ -25,12 +25,9 @@ public class ShapeParser extends Parser<Shape> {
     if (r.is(Sym.CIRCLE)) {
       r.eat(Sym.CIRCLE);
       r.eat(Sym.LPAR);
-      AST<Integer> x = expr.parse();
-      r.eat(Sym.COMA);
-      AST<Integer> y = expr.parse();
-      r.eat(Sym.COMA);
-      AST<Integer> rad = expr.parse();
-      r.eat(Sym.COMA);
+      AST<Integer> x = expr.parse(Sym.COMA);
+      AST<Integer> y = expr.parse(Sym.COMA);
+      AST<Integer> rad = expr.parse(Sym.COMA);
       Color c = r.pop(Color.class).getObject();
       r.eat(Sym.RPAR);
       return new ASTShape(Ellipse2D.Double::new,
@@ -42,14 +39,10 @@ public class ShapeParser extends Parser<Shape> {
 
     r.eat(Sym.RECT);
     r.eat(Sym.LPAR);
-    AST<Integer> x = expr.parse();
-    r.eat(Sym.COMA);
-    AST<Integer> y = expr.parse();
-    r.eat(Sym.COMA);
-    AST<Integer> width = expr.parse();
-    r.eat(Sym.COMA);
-    AST<Integer> height = expr.parse();
-    r.eat(Sym.COMA);
+    AST<Integer> x = expr.parse(Sym.COMA);
+    AST<Integer> y = expr.parse(Sym.COMA);
+    AST<Integer> width = expr.parse(Sym.COMA);
+    AST<Integer> height = expr.parse(Sym.COMA);
     Color c = r.pop(Color.class).getObject();
     r.eat(Sym.RPAR);
     return new ASTShape(Rectangle2D.Double::new,x, y, width, height,c);

@@ -21,5 +21,4 @@ class ParserExpr extends Parser<Integer> {
     r.eat(Sym.RPAR);
     return res;
   }
-
 }
