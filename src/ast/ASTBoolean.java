@@ -4,9 +4,9 @@ import src.Env;
 
 public class ASTBoolean extends AST<Boolean> {
 
-  private Expr expr;
+  private AST<Integer> expr;
 
-  public ASTBoolean (Expr expr) {
+  public ASTBoolean (AST<Integer> expr) {
     this.expr = expr;
   }
 

@@ -7,9 +7,9 @@ public class ASTVar {
   public static class ConstDeclaration extends AST<Void> {
     
     private final String id;
-    private final Expr value;
+    private final AST<Integer> value;
 
-    public ConstDeclaration(String id, Expr value) {
+    public ConstDeclaration(String id, AST<Integer> value) {
       this.id = id;
       this.value = value;
     }
@@ -24,9 +24,9 @@ public class ASTVar {
   public static class VarDeclaration extends AST<Void> {
   
     private final String id;
-    private final Expr value;
+    private final AST<Integer> value;
 
-    public VarDeclaration (String id, Expr value) {
+    public VarDeclaration (String id, AST<Integer> value) {
       this.id = id;
       this.value = value;
     }
@@ -41,9 +41,9 @@ public class ASTVar {
   public static class VarAffectation extends AST<Void> {
   
     private final String id;
-    private final Expr value;
+    private final AST<Integer> value;
 
-    public VarAffectation (String id, Expr value) {
+    public VarAffectation (String id, AST<Integer> value) {
       this.id = id;
       this.value = value;
     }

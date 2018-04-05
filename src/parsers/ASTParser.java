@@ -50,14 +50,14 @@ public class ASTParser extends Parser<Void> {
     else if (r.is(String.class)) return affectation();
     else if(r.is(Sym.IF)){
       r.eat(Sym.IF);
-      Expr cond = parserExpr.parse();
+      AST<Integer> cond = parserExpr.parse();
       r.eat(Sym.THEN);
       AST<Void> ifTrue = instruction();
       r.eat(Sym.ELSE);
       return new ASTCond(new ASTBoolean(cond), ifTrue, instruction());
     } else if (r.is(Sym.WHILE)) {
       r.eat(Sym.WHILE);
-      Expr cond = parserExpr.parse();
+      AST<Integer> cond = parserExpr.parse();
       r.eat(Sym.DO);
       return new ASTWhile(new ASTBoolean(cond), instruction());
     } 
@@ -82,7 +82,7 @@ public class ASTParser extends Parser<Void> {
     r.eat();
     String id = r.pop(String.class).getObject();
     r.eat(Sym.EQ);
-    Expr value = parserExpr.parse();
+    AST<Integer> value = parserExpr.parse();
     return cst ? new ASTVar.ConstDeclaration(id, value) : 
                  new ASTVar.VarDeclaration(id, value); 
   }
@@ -90,7 +90,7 @@ public class ASTParser extends Parser<Void> {
   private AST<Void> affectation () throws Exception {
     String id = r.pop(String.class).getObject();
     r.eat(Sym.EQ);
-    Expr value = parserExpr.parse();
+    AST<Integer> value = parserExpr.parse();
     return new ASTVar.VarAffectation(id, value);
   }
 

@@ -8,16 +8,16 @@ import src.ast.*;
 
 class ParserExpr extends Parser<Integer> {
 
-  public Expr parse()
+  public AST<Integer> parse()
       throws Exception, UnexpectedSymbolException, CannotFindSymbolException, IOException {
     if(r.is(Integer.class))
       return new ExprLeaf.Int(r.pop(Integer.class).getObject());
     if(r.is(String.class))
       return new ExprLeaf.Id(r.pop(String.class).getObject());
     r.eat(Sym.LPAR);
-    Expr a   = parse();
+    AST<Integer> a   = parse();
     TokenOp op = r.popOp();
-    Expr res = new ExprOp(op.fun,op.str, a,parse());
+    AST<Integer> res = new ExprOp(op.fun,op.str, a,parse());
     r.eat(Sym.RPAR);
     return res;
   }

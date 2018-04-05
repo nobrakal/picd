@@ -4,7 +4,7 @@ import src.Env;
 
 public class ExprLeaf {
 
-  public static class Int extends Expr {
+  public static class Int extends AST<Integer>{
     public final int val;
 
     public Int(int val){
@@ -21,7 +21,7 @@ public class ExprLeaf {
 
   }
 
-  public static class Id extends Expr {
+  public static class Id extends AST<Integer>{
 
     public final String id;
 

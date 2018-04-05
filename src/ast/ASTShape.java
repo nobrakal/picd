@@ -7,10 +7,10 @@ import src.Env;
 
 public class ASTShape extends AST<Shape> {
   public final ShapeBuilder shapeb;
-  public final Expr a,b,c,d;
+  public final AST<Integer> a,b,c,d;
   public final Color color;
 
-  public ASTShape(ShapeBuilder shape, Expr a, Expr b, Expr c, Expr d, Color color){
+  public ASTShape(ShapeBuilder shape, AST<Integer> a, AST<Integer> b, AST<Integer> c, AST<Integer> d, Color color){
     this.shapeb = shape;
     this.a      = a;
     this.b      = b;

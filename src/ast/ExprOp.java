@@ -4,13 +4,13 @@ import java.util.function.BiFunction;
 
 import src.Env;
 
-public class ExprOp extends Expr {
+public class ExprOp extends AST<Integer> {
 
   public final BiFunction<Integer,Integer,Integer> op;
   public final String str;
-  public final Expr left, right;
+  public final AST<Integer> left, right;
 
-  public ExprOp(BiFunction<Integer,Integer,Integer> op, String str, Expr left, Expr right){
+  public ExprOp(BiFunction<Integer,Integer,Integer> op, String str, AST<Integer> left, AST<Integer> right){
     this.op    = op;
     this.left  = left;
     this.right = right;

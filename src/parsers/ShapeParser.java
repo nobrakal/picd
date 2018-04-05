@@ -25,11 +25,11 @@ public class ShapeParser extends Parser<Shape> {
     if (r.is(Sym.CIRCLE)) {
       r.eat(Sym.CIRCLE);
       r.eat(Sym.LPAR);
-      Expr x = expr.parse();
+      AST<Integer> x = expr.parse();
       r.eat(Sym.COMA);
-      Expr y = expr.parse();
+      AST<Integer> y = expr.parse();
       r.eat(Sym.COMA);
-      Expr rad = expr.parse();
+      AST<Integer> rad = expr.parse();
       r.eat(Sym.COMA);
       Color c = r.pop(Color.class).getObject();
       r.eat(Sym.RPAR);
@@ -42,13 +42,13 @@ public class ShapeParser extends Parser<Shape> {
 
     r.eat(Sym.RECT);
     r.eat(Sym.LPAR);
-    Expr x = expr.parse();
+    AST<Integer> x = expr.parse();
     r.eat(Sym.COMA);
-    Expr y = expr.parse();
+    AST<Integer> y = expr.parse();
     r.eat(Sym.COMA);
-    Expr width = expr.parse();
+    AST<Integer> width = expr.parse();
     r.eat(Sym.COMA);
-    Expr height = expr.parse();
+    AST<Integer> height = expr.parse();
     r.eat(Sym.COMA);
     Color c = r.pop(Color.class).getObject();
     r.eat(Sym.RPAR);
