@@ -27,5 +27,8 @@ public enum Sym {
   WHILE,
   DO,
 
-  NOT
+  NOT,
+
+  FUN,
+  RUN
 };

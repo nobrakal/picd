@@ -83,8 +83,8 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 "/"          { return tokenOp((a,b)-> a/b, yytext());}
 "&"          { return tokenOp((a,b)-> a*b, yytext());}
 "|"          { return tokenOp((a,b)-> a+b -a*b,yytext());}
-"true"       { return token(Integer.class, "1");}
-"false"      { return token(Integer.class, "0");}
+"True"       { return token(Integer.class, "1");}
+"False"      { return token(Integer.class, "0");}
 
 "!"          { return token(Sym.NOT);}
 "("          { return token(Sym.LPAR);}
