@@ -1,6 +1,6 @@
 Const x = 50;
 
-If ((x * 2) < 120)  Then
+If (!(x * 2) < 120)  Then
   FillRect(40, 40, 70, 70, #FF0000)
 Else
   FillRect(180, 200, 43, 42, #FFFF00);

@@ -14,6 +14,11 @@ class ParserExpr extends Parser<Integer> {
       return new ExprLeaf.Int(r.pop(Integer.class).getObject());
     if(r.is(String.class))
       return new ExprLeaf.Id(r.pop(String.class).getObject());
+    if(r.is(Sym.NOT)){
+      r.eat(Sym.NOT);
+      AST<Integer> res = new ExprOp((a,b)-> {return (a==b)?1:0;},"!",new ExprLeaf.Int(1), parse());
+      return res;
+    }
     r.eat(Sym.LPAR);
     AST<Integer> a   = parse();
     TokenOp op = r.popOp();

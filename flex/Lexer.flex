@@ -86,6 +86,7 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 "true"       { return token(Integer.class, "1");}
 "false"      { return token(Integer.class, "0");}
 
+"!"          { return token(Sym.NOT);}
 "("          { return token(Sym.LPAR);}
 ")"          { return token(Sym.RPAR);}
 ","          { return token(Sym.COMA);}

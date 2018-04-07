@@ -16,5 +16,5 @@ instruction -> Begin suite-instructions End
   | FillRect (expr, expr ,expr, expr, couleur )
   
 suite-instructions -> instruction; suite-instructions | espilon
-expr -> nombre | (expr opérateur expr) | "true" | "false"
+expr -> nombre | (expr opérateur expr) | "true" | "false" | ! (expr)
 ```
