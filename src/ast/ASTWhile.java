@@ -14,10 +14,8 @@ public class ASTWhile extends AST<Void> {
   }
 
   public Void eval (Env e) throws Exception {
-    while (cond.eval(e)) {
-      System.out.println(e);
+    while (cond.eval(e))
       loop.eval(e);
-    }
     return null;
   }
 

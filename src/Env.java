@@ -2,12 +2,13 @@ package src;
 
 import java.util.HashMap;
 import java.awt.Graphics2D;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import src.exceptions.*;
 
 public class Env {
 
-  private final HashMap<String, Integer> csts, vars;
+  private final HashMap<String, AtomicInteger> csts, vars;
 
   private int line, column;
 
@@ -30,23 +31,23 @@ public class Env {
   }
 
   public int getVar(String id) throws CannotFindSymbolException{ 
-    if(vars.containsKey(id)) return vars.get(id);
-    if (csts.containsKey(id)) return csts.get(id);
+    if (vars.containsKey(id)) return vars.get(id).intValue();
+    if (csts.containsKey(id)) return csts.get(id).intValue();
     throw new CannotFindSymbolException(id, line, column);
   }
 
   public void addVar(String id, int  value) {
-    vars.put(id, value);
+    vars.put(id, new AtomicInteger(value));
   }
 
   public void setVar (String id, int value) throws CannotFindSymbolException {
     if (!vars.containsKey(id))
       throw new CannotFindSymbolException(id, line, column); 
-    vars.put(id, value);
+    vars.get(id).set(value);
   }
 
   public void addConst(String id, int value) {
-    csts.put(id, value);
+    csts.put(id, new AtomicInteger(value));
   }
 
   public Env clone () {

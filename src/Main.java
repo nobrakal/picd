@@ -56,8 +56,7 @@ class MyCanvas extends JComponent {
     try {
       ast.eval(new Env((Graphics2D)g));
     } catch (Exception e) {
-      System.err.println("Error on execution: ");
-      e.printStackTrace();
+      System.err.println("Error on execution: " + e);
       System.exit(-1);
     }
   }
