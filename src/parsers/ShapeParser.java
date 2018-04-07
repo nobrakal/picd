@@ -10,7 +10,6 @@ import java.awt.Color;
 import src.token.*;
 import src.exceptions.*;
 import src.ast.*;
-import src.utils.Tuple;
 
 public class ShapeParser extends Parser<Shape> {
 

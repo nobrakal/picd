@@ -26,9 +26,8 @@ public class Main {
             System.out.println("Please provide a single file to parse");
             System.exit(-1);
         }
-        javax.swing.SwingUtilities.invokeLater(() -> {
-          initAndShow(args[0]);
-        });
+
+        javax.swing.SwingUtilities.invokeLater(() -> initAndShow(args[0]));
     }
 }
 
@@ -59,6 +58,7 @@ class MyCanvas extends JComponent {
     } catch (Exception e) {
       System.err.println("Error on execution: ");
       e.printStackTrace();
+      System.exit(-1);
     }
   }
 }
