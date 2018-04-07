@@ -16,7 +16,7 @@ class ParserExpr extends Parser<Integer> {
       return new ExprLeaf.Id(r.pop(String.class).getObject());
     if(r.is(Sym.NOT)){
       r.eat(Sym.NOT);
-      AST<Integer> res = new ExprOp((a,b)-> {return (a==b)?1:0;},"!",new ExprLeaf.Int(1), parse());
+      AST<Integer> res = new ExprOp((a,b)-> {return (a==b)?1:0;},"!",new ExprLeaf.Int(0), parse());
       return res;
     }
     r.eat(Sym.LPAR);
