@@ -62,6 +62,9 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 "Rect"       { return token(Sym.RECT);}
 "Circle"     { return token(Sym.CIRCLE);}
 
+"Fun"       { return token(Sym.FUN);}
+"Run"     { return token(Sym.RUN);}
+
 "If"         { return token(Sym.IF);}
 "Then"       { return token(Sym.THEN);}
 "Else"       { return token(Sym.ELSE);}

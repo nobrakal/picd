@@ -5,26 +5,30 @@ import java.awt.Graphics2D;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import src.exceptions.*;
+import src.ast.ASTFun;
 
-public class Env {
-
-  private final HashMap<String, AtomicInteger> csts, vars;
-
-  private int line, column;
+public class Env{
 
   public final Graphics2D g;
+
+  private final HashMap<String, AtomicInteger> csts, vars;
+  private final HashMap<String,ASTFun> funs;
+
+  private int line, column;
 
   public Env (Graphics2D g) {
     csts   = new HashMap<>();
     vars   = new HashMap<>();
+    funs   = new HashMap<>();
     line   = 1;
     column = 1;
-    this.g = g;
+    this.g=g;
   }
 
   private Env (Env e) {
     csts   = new HashMap<>(e.csts);
     vars   = new HashMap<>(e.vars);
+    funs   = new HashMap<>(e.funs);
     line   = e.line;
     column = e.column;
     g      = e.g;
@@ -48,6 +52,15 @@ public class Env {
 
   public void addConst(String id, int value) {
     csts.put(id, new AtomicInteger(value));
+  }
+
+  public void addFun(String id, ASTFun value) {
+    funs.put(id, value);
+  }
+
+  public ASTFun getFun(String id) throws CannotFindSymbolException{ 
+    if (funs.containsKey(id)) return funs.get(id);
+    throw new CannotFindSymbolException(id, line, column);
   }
 
   public Env clone () {

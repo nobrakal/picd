@@ -3,6 +3,7 @@ package src.parsers;
 import java.io.*;
 
 import java.util.function.BiFunction;
+import java.util.ArrayList;
 
 import src.exceptions.*;
 import src.token.*;
@@ -71,6 +72,20 @@ public class LookAhead1 {
   public void eat () throws Exception, IOException {
     current = lexer.yylex();
   }
+
+  public <C> ArrayList<C> parseSuiteObject(Class<C> c) throws Exception{
+    ArrayList<C> res= new ArrayList<C>();
+    eat(Sym.LPAR);
+    while(!is(Sym.RPAR)){
+      if(is(Sym.COMA)){
+        eat(Sym.COMA);
+      }
+      res.add(pop(c).getObject());
+    }
+    eat(Sym.RPAR);
+    return res;
+  }
+
 
   public boolean isEmpty () {
     return current == null;

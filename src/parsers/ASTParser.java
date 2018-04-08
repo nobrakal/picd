@@ -2,6 +2,7 @@ package src.parsers;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.awt.Shape;
 import java.awt.Color;
 
@@ -11,12 +12,14 @@ import src.ast.*;
 
 public class ASTParser extends Parser<Void> {
 
-  private ParserExpr parserExpr;
-  private ShapeParser shapeParser;
+  private final ParserExpr parserExpr;
+  private final ShapeParser shapeParser;
+  private final FunParser funParser;
 
   public ASTParser(){
     parserExpr = new ParserExpr();
     shapeParser = new ShapeParser();
+    funParser = new FunParser(this);
   }
 
   public AST<Void> parse () throws Exception {
@@ -46,7 +49,8 @@ public class ASTParser extends Parser<Void> {
   private AST<Void> instruction () throws UnexpectedSymbolException, Exception {
     if (r.are(Sym.DRAW, Sym.FILL)) return shape();
     else if(r.are(Sym.CONST, Sym.VAR)) return declaration();
-    else if (r.is(String.class)) return affectation();
+    else if(r.is(String.class)) return affectation();
+    else if(r.is(Sym.FUN)) return fundec();
     else if(r.is(Sym.IF)){
       r.eat(Sym.IF);
       AST<Integer> cond = parserExpr.parse(Sym.THEN);
@@ -57,12 +61,21 @@ public class ASTParser extends Parser<Void> {
       r.eat(Sym.WHILE);
       AST<Integer> cond = parserExpr.parse(Sym.DO);
       return new ASTWhile(new ASTBoolean(cond), instruction());
-    } 
-
-    r.eat(Sym.BEGIN);
-    ASTSequence block = new ASTSequence(sequence(Sym.END));
-    r.eat(Sym.END);
-    return block;
+    } else if(r.is(Sym.RUN)){
+      r.eat(Sym.RUN);
+      String id = r.pop(String.class).getObject();
+      r.eat(Sym.LPAR);
+      ArrayList<AST<Integer>> res = new ArrayList<>();
+      while(!r.is(Sym.RPAR)){
+        if(r.is(Sym.COMA)){
+          r.eat(Sym.COMA);
+        }
+        res.add(parserExpr.parse());
+      }  
+      r.eat(Sym.RPAR);
+      return new ASTRun(id,res);
+    }
+    return beginEnd();
   }
 
   private AST<Void> shape () throws Exception {
@@ -91,4 +104,15 @@ public class ASTParser extends Parser<Void> {
     return new ASTVar.VarAffectation(id, value);
   }
 
+  public ASTSequence beginEnd() throws Exception{
+    r.eat(Sym.BEGIN);
+    ASTSequence block = new ASTSequence(sequence(Sym.END));
+    r.eat(Sym.END);
+    return block;
+  }
+
+  private ASTFun fundec() throws Exception{
+    r.eat(Sym.FUN);
+    return (ASTFun)funParser.parse();
+  }
 }
