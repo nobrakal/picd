@@ -34,7 +34,7 @@ public class Env{
   }
 
   public static Env mkPartialEnv(Env e){
-    return new Env(e.g, new HashMap<>(), new HashMap<>(), new HashMap<>(), e.line, e.column);
+    return new Env(e.g, new HashMap<>(), new HashMap<>(), new HashMap<>(e.funs), e.line, e.column);
   }
 
   public int getVar(String id) throws CannotFindSymbolException{ 

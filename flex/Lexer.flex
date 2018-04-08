@@ -77,6 +77,7 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 
 "<="         { return tokenOp((a,b)-> (a<=b)?1:0,yytext());}
 ">="         { return tokenOp((a,b)-> (a>=b)?1:0,yytext());}
+"=="         { return tokenOp((a,b)-> (a==b)?1:0,yytext());}
 "<"          { return tokenOp((a,b)-> (a<b)?1:0,yytext());}
 ">"          { return tokenOp((a,b)-> (a>b)?1:0,yytext());}
 
