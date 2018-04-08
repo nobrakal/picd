@@ -1,0 +1,13 @@
+Var var_x=250;
+
+Fun simple (var_x) Begin
+  FillRect(var_x,var_x,100,75,#FF0000);
+    Begin
+      DrawCircle(60,80,50,#00FF00);
+      FillCircle(130,300,150,#0000FF);
+      DrawCircle(450,100,100,#FFFF00);
+    End;
+  DrawRect(50,50,50,50,#FF00FF);
+End;
+
+Run simple (var_x);
