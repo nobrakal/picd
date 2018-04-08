@@ -16,22 +16,25 @@ public class Env{
 
   private int line, column;
 
-  public Env (Graphics2D g) {
-    csts   = new HashMap<>();
-    vars   = new HashMap<>();
-    funs   = new HashMap<>();
-    line   = 1;
-    column = 1;
+  public Env (Graphics2D g, HashMap<String, AtomicInteger> vars, HashMap<String, AtomicInteger> csts, HashMap<String,ASTFun> funs, int line, int column) {
+    this.csts   = csts;
+    this.vars   = vars;
+    this.funs   = funs;
+    this.line   = line;
+    this.column = column;
     this.g=g;
   }
 
+  public Env(Graphics2D g){
+    this(g, new HashMap<>(),new HashMap<>(), new HashMap<>(),1,1 );
+  }
+
   private Env (Env e) {
-    csts   = new HashMap<>(e.csts);
-    vars   = new HashMap<>(e.vars);
-    funs   = new HashMap<>(e.funs);
-    line   = e.line;
-    column = e.column;
-    g      = e.g;
+    this(e.g,new HashMap<>(e.csts),new HashMap<>(e.vars),new HashMap<>(e.funs), e.line,e.column);
+  }
+
+  public static Env mkPartialEnv(Env e){
+    return new Env(e.g, new HashMap<>(), new HashMap<>(), new HashMap<>(), e.line, e.column);
   }
 
   public int getVar(String id) throws CannotFindSymbolException{ 

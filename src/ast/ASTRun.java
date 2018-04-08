@@ -16,9 +16,9 @@ public class ASTRun extends AST<Void> {
 
   public Void eval (Env e) throws Exception {
     ASTFun astf = e.getFun(id);
-    Env newenv = new Env(e.g);
+    Env newenv = Env.mkPartialEnv(e);
     for(int i=0; i<realArgs.size(); i++){
-      e.addVar(astf.args.get(i), realArgs.get(i).eval(e));
+      newenv.addVar(astf.args.get(i), realArgs.get(i).eval(e));
     }
     astf.run(newenv);
     return null;
