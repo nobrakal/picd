@@ -20,6 +20,6 @@ public class FunParser extends Parser<Void>{
   public AST<Void> parse() throws Exception{
     String id = r.pop(String.class).getObject();
     ArrayList<String> ids = r.parseSuiteObject(String.class);
-    return new ASTFun(id,astp.beginEnd(), ids.toArray(new String[0]));
+    return new ASTFun(id,astp.beginEnd(), ids);
   }
 }

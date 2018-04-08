@@ -18,7 +18,7 @@ public class ASTRun extends AST<Void> {
     ASTFun astf = e.getFun(id);
     Env newenv = new Env(e.g);
     for(int i=0; i<realArgs.size(); i++){
-      e.addVar(astf.args[i], realArgs.get(i).eval(e));
+      e.addVar(astf.args.get(i), realArgs.get(i).eval(e));
     }
     astf.run(newenv);
     return null;

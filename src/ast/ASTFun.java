@@ -2,14 +2,15 @@ package src.ast;
 
 import src.Env;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class ASTFun extends AST<Void> {
 
   private final String id;
-  public final String[] args; 
+  public final ArrayList<String> args; 
   private final ASTSequence asts;
 
-  public ASTFun (String id, ASTSequence asts, String ... ids) {
+  public ASTFun (String id, ASTSequence asts, ArrayList<String> ids) {
     this.id=id;
     args = ids;
     this.asts=asts;
