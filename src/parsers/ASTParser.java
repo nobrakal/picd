@@ -24,8 +24,8 @@ public class ASTParser extends Parser<Void> {
     funParser = new FunParser(this);
   }
 
-  public ASTSequence parse () throws Exception {
-    return new ASTSequence(sequence());
+  public ASTModule parse () throws Exception {
+    return new ASTModule(sequence());
   }
 
   private LinkedList<AST<Void>> sequence () throws Exception {
@@ -82,9 +82,9 @@ public class ASTParser extends Parser<Void> {
       String path = r.pop(String.class).getObject();
       LookAhead1 oldr = Parser.r;
       Parser.r = new LookAhead1(path);
-      ASTSequence mainImported = parse();
+      ASTModule mainImported = parse();
       Parser.r = oldr;
-      return new ASTFun("main/"+path,mainImported,null);
+      return mainImported;
     }
     return beginEnd();
   }
