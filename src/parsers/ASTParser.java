@@ -1,6 +1,7 @@
 package src.parsers;
 
 import java.io.IOException;
+import java.io.File;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.awt.Shape;
@@ -22,7 +23,7 @@ public class ASTParser extends Parser<Void> {
     funParser = new FunParser(this);
   }
 
-  public AST<Void> parse () throws Exception {
+  public ASTSequence parse () throws Exception {
     return new ASTSequence(sequence());
   }
 
@@ -74,6 +75,14 @@ public class ASTParser extends Parser<Void> {
       }  
       r.eat(Sym.RPAR);
       return new ASTRun(id,res);
+    } else if(r.is(Sym.IMPORT)){
+      r.eat(Sym.IMPORT);
+      String path = r.pop(String.class).getObject();
+      LookAhead1 oldr = Parser.r;
+      Parser.r = new LookAhead1(path);
+      ASTSequence mainImported = parse();
+      Parser.r = oldr;
+      return new ASTFun("main/"+path,mainImported,null);
     }
     return beginEnd();
   }
