@@ -10,6 +10,7 @@ import java.awt.Color;
 import src.token.*;
 import src.exceptions.*;
 import src.ast.*;
+import src.Env;
 
 public class ASTParser extends Parser<Void> {
 
@@ -52,6 +53,7 @@ public class ASTParser extends Parser<Void> {
     else if(r.are(Sym.CONST, Sym.VAR)) return declaration();
     else if(r.is(String.class)) return affectation();
     else if(r.is(Sym.FUN)) return fundec();
+    else if (r.is(Sym.SLEEP)) return sleep();
     else if(r.is(Sym.IF)){
       r.eat(Sym.IF);
       AST<Integer> cond = parserExpr.parse(Sym.THEN);
@@ -123,5 +125,10 @@ public class ASTParser extends Parser<Void> {
   private ASTFun fundec() throws Exception{
     r.eat(Sym.FUN);
     return (ASTFun)funParser.parse();
+  }
+
+  private AST<Void> sleep () throws Exception {
+    r.eat(Sym.SLEEP);
+    return new ASTSleep(parserExpr.parse());
   }
 }

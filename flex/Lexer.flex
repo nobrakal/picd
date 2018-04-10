@@ -65,6 +65,7 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 "Import"     { return token(Sym.IMPORT);}
 "Fun"        { return token(Sym.FUN);}
 "Run"        { return token(Sym.RUN);}
+"Sleep"      { return token(Sym.SLEEP);}
 
 "If"         { return token(Sym.IF);}
 "Then"       { return token(Sym.THEN);}

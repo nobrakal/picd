@@ -26,7 +26,7 @@ public class Env{
   }
 
   public Env(Graphics2D g){
-    this(g, new HashMap<>(),new HashMap<>(), new HashMap<>(),1,1 );
+    this(g, new HashMap<>(), new HashMap<>(), new HashMap<>(),1,1 );
   }
 
   private Env (Env e) {

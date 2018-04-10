@@ -1,0 +1,8 @@
+Var pos = 0;
+
+While 1 Do
+Begin
+    FillRect(pos, pos, 100, 100, #000000);
+    pos = (pos + 1);
+    Sleep 1;
+End;

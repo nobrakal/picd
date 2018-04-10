@@ -31,5 +31,6 @@ public enum Sym {
 
   FUN,
   RUN,
-  IMPORT
+  IMPORT,
+  SLEEP
 };
