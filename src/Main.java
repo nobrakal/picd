@@ -47,7 +47,7 @@ class MyCanvas extends JComponent {
     } catch(Exception e) {
       System.out.println(e);
       e.printStackTrace();
-      System.exit(-1);
+      System.exit(1);
     }
   }
 
@@ -57,7 +57,7 @@ class MyCanvas extends JComponent {
       ast.eval(new Env((Graphics2D)g));
     } catch (Exception e) {
       System.err.println("Error on execution: " + e);
-      System.exit(-1);
+      System.exit(1);
     }
   }
 }

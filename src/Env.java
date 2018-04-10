@@ -22,15 +22,15 @@ public class Env{
     this.funs   = funs;
     this.line   = line;
     this.column = column;
-    this.g=g;
+    this.g      = g;
   }
 
   public Env(Graphics2D g){
-    this(g, new HashMap<>(), new HashMap<>(), new HashMap<>(),1,1 );
+    this(g, new HashMap<>(), new HashMap<>(), new HashMap<>(), 1, 1);
   }
 
   private Env (Env e) {
-    this(e.g,new HashMap<>(e.csts),new HashMap<>(e.vars),new HashMap<>(e.funs), e.line,e.column);
+    this(e.g, new HashMap<>(e.vars), new HashMap<>(e.csts), new HashMap<>(e.funs), e.line, e.column);
   }
 
   public static Env mkPartialEnv(Env e){
@@ -48,6 +48,7 @@ public class Env{
   }
 
   public void setVar (String id, int value) throws CannotFindSymbolException {
+    System.out.println(this);
     if (!vars.containsKey(id))
       throw new CannotFindSymbolException(id, line, column); 
     vars.get(id).set(value);
