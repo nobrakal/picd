@@ -5,7 +5,7 @@ import src.Env;
 
 public class ASTSequence extends AST<Void> {
 
-  private LinkedList<AST<Void>> asts;
+  protected LinkedList<AST<Void>> asts;
 
   public ASTSequence (LinkedList<AST<Void>> asts) {
     this.asts = asts;
