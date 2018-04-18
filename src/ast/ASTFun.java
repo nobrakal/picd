@@ -11,13 +11,13 @@ public class ASTFun extends AST<Void> {
   private final ASTSequence asts;
 
   public ASTFun (String id, ASTSequence asts, ArrayList<String> ids) {
-    this.id=id;
-    args = ids;
-    this.asts=asts;
+    this.id   = id;
+    args      = ids;
+    this.asts = asts;
   }
 
   public Void eval (Env e) throws Exception {
-    e.addFun(this.id,this);
+    e.addFun(this.id, this);
     return null;
   }
 

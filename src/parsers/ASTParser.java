@@ -12,23 +12,10 @@ import src.exceptions.*;
 import src.ast.*;
 import src.Env;
 
-public class ASTParser extends Parser<Void> {
+public abstract class ASTParser<T> extends Parser<T> {
 
-  private final ParserExpr parserExpr;
-  private final ShapeParser shapeParser;
-  private final FunParser funParser;
-
-  public ASTParser(){
-    parserExpr = new ParserExpr();
-    shapeParser = new ShapeParser();
-    funParser = new FunParser(this);
-  }
-
-  public ASTSequence parse () throws Exception {
-    return new ASTSequence(sequence());
-  }
-
-  private LinkedList<AST<Void>> sequence () throws Exception {
+  protected LinkedList<AST<Void>> sequence ()
+      throws Exception {
     LinkedList<AST<Void>> seq = new LinkedList<>();
     while (!r.isEmpty()) {
       seq.add(instruction());
@@ -38,7 +25,8 @@ public class ASTParser extends Parser<Void> {
     return seq;
   }
 
-  private LinkedList<AST<Void>> sequence(Sym e) throws Exception {
+  protected LinkedList<AST<Void>> sequence(Sym e)
+      throws Exception {
     LinkedList<AST<Void>> seq = new LinkedList<>();
     while (!r.isEmpty() && !r.is(e)) {
       seq.add(instruction());
@@ -48,11 +36,11 @@ public class ASTParser extends Parser<Void> {
     return seq;
   }
 
-  private AST<Void> instruction () throws UnexpectedSymbolException, Exception {
+  protected AST<Void> instruction ()
+      throws UnexpectedSymbolException, Exception {
     if (r.are(Sym.DRAW, Sym.FILL)) return shape();
     else if(r.are(Sym.CONST, Sym.VAR)) return declaration();
     else if(r.is(String.class)) return affectation();
-    else if(r.is(Sym.FUN)) return fundec();
     else if (r.is(Sym.SLEEP)) return sleep();
     else if(r.is(Sym.IF)){
       r.eat(Sym.IF);
@@ -70,26 +58,16 @@ public class ASTParser extends Parser<Void> {
       r.eat(Sym.LPAR);
       ArrayList<AST<Integer>> res = new ArrayList<>();
       while(!r.is(Sym.RPAR)){
-        if(r.is(Sym.COMA)){
-          r.eat(Sym.COMA);
-        }
+        if(r.is(Sym.COMA)) r.eat(Sym.COMA);
         res.add(parserExpr.parse());
-      }  
+      }
       r.eat(Sym.RPAR);
       return new ASTRun(id,res);
-    } else if(r.is(Sym.IMPORT)){
-      r.eat(Sym.IMPORT);
-      String path = r.pop(String.class).getObject();
-      LookAhead1 oldr = Parser.r;
-      Parser.r = new LookAhead1(path);
-      ASTSequence mainImported = parse();
-      Parser.r = oldr;
-      return new ASTFun("main/"+path,mainImported,null);
     }
     return beginEnd();
   }
 
-  private AST<Void> shape () throws Exception {
+  protected AST<Void> shape () throws Exception {
     // assert Sym.DRAW or Sym.FILL
     boolean draw = r.is(Sym.DRAW);
     r.eat();
@@ -97,7 +75,7 @@ public class ASTParser extends Parser<Void> {
     return draw ? new ASTDraw(shp) : new ASTFill(shp);
   }
 
-  private AST<Void> declaration () throws Exception {
+  protected AST<Void> declaration () throws Exception {
     // assert Sym.VAR or Sym.CONST
     boolean cst = r.is(Sym.CONST);
     r.eat();
@@ -108,7 +86,7 @@ public class ASTParser extends Parser<Void> {
                  new ASTVar.VarDeclaration(id, value); 
   }
 
-  private AST<Void> affectation () throws Exception {
+  protected AST<Void> affectation () throws Exception {
     String id = r.pop(String.class).getObject();
     r.eat(Sym.EQ);
     AST<Integer> value = parserExpr.parse();
@@ -122,13 +100,9 @@ public class ASTParser extends Parser<Void> {
     return block;
   }
 
-  private ASTFun fundec() throws Exception{
-    r.eat(Sym.FUN);
-    return (ASTFun)funParser.parse();
-  }
-
   private AST<Void> sleep () throws Exception {
     r.eat(Sym.SLEEP);
     return new ASTSleep(parserExpr.parse());
   }
+
 }
