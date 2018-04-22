@@ -4,31 +4,36 @@ import src.Env;
 
 public class ASTVar {
 
-  public static class ConstDeclaration extends AST<Void> {
-    
-    private final String id;
-    private final AST<Integer> value;
+  public static abstract class ASTV extends AST<Void>{
+    protected final String id;
+    protected final AST<Integer> value;
 
-    public ConstDeclaration(String id, AST<Integer> value) {
+    public ASTV(String id, AST<Integer> value) {
       this.id = id;
       this.value = value;
     }
 
+    public abstract Void eval (Env e) throws Exception;
+  }
+
+  public static class ConstDeclaration extends ASTV {
+
+    public ConstDeclaration(String id, AST<Integer> value) {
+     super(id,value); 
+    }
+    
     public Void eval (Env e) throws Exception {
       e.addConst(id, value.eval(e));
       return null;
     }
 
+
   }
 
-  public static class VarDeclaration extends AST<Void> {
-  
-    private final String id;
-    private final AST<Integer> value;
+  public static class VarDeclaration extends ASTV {
 
-    public VarDeclaration (String id, AST<Integer> value) {
-      this.id = id;
-      this.value = value;
+    public VarDeclaration(String id, AST<Integer> value) {
+     super(id,value); 
     }
 
     public Void eval (Env e) throws Exception {
@@ -38,18 +43,18 @@ public class ASTVar {
 
   }
 
-  public static class VarAffectation extends AST<Void> {
-  
-    private final String id;
-    private final AST<Integer> value;
+  public static class VarAffectation extends ASTV {
 
-    public VarAffectation (String id, AST<Integer> value) {
-      this.id = id;
-      this.value = value;
+    private final int line, column;
+    
+    public VarAffectation(String id, AST<Integer> value, int line, int column) {
+     super(id,value);
+     this.line=line;
+     this.column=column;
     }
 
     public Void eval (Env e) throws Exception {
-      e.setVar(id, value.eval(e));
+      e.setVar(id, value.eval(e), line, column);
       return null;
     }
   }

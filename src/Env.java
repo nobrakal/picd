@@ -16,28 +16,26 @@ public class Env{
 
   private int line, column;
 
-  public Env (Graphics2D g, HashMap<String, AtomicInteger> vars, HashMap<String, AtomicInteger> csts, HashMap<String,ASTFun> funs, int line, int column) {
+  public Env (Graphics2D g, HashMap<String, AtomicInteger> vars, HashMap<String, AtomicInteger> csts, HashMap<String,ASTFun> funs) {
     this.csts   = csts;
     this.vars   = vars;
     this.funs   = funs;
-    this.line   = line;
-    this.column = column;
     this.g=g;
   }
 
   public Env(Graphics2D g){
-    this(g, new HashMap<>(), new HashMap<>(), new HashMap<>(),1,1 );
+    this(g, new HashMap<>(), new HashMap<>(), new HashMap<>());
   }
 
   private Env (Env e) {
-    this(e.g,new HashMap<>(e.csts),new HashMap<>(e.vars),new HashMap<>(e.funs), e.line,e.column);
+    this(e.g,new HashMap<>(e.csts),new HashMap<>(e.vars),new HashMap<>(e.funs));
   }
 
   public static Env mkPartialEnv(Env e){
-    return new Env(e.g, new HashMap<>(), new HashMap<>(), new HashMap<>(e.funs), e.line, e.column);
+    return new Env(e.g, new HashMap<>(), new HashMap<>(), new HashMap<>(e.funs));
   }
 
-  public int getVar(String id) throws CannotFindSymbolException{ 
+  public int getVar(String id, int line, int column) throws CannotFindSymbolException{ 
     if (vars.containsKey(id)) return vars.get(id).intValue();
     if (csts.containsKey(id)) return csts.get(id).intValue();
     throw new CannotFindSymbolException(id, line, column);
@@ -47,7 +45,7 @@ public class Env{
     vars.put(id, new AtomicInteger(value));
   }
 
-  public void setVar (String id, int value) throws CannotFindSymbolException {
+  public void setVar (String id, int value, int line, int column) throws CannotFindSymbolException {
     if (!vars.containsKey(id))
       throw new CannotFindSymbolException(id, line, column); 
     vars.get(id).set(value);
@@ -61,7 +59,7 @@ public class Env{
     funs.put(id, value);
   }
 
-  public ASTFun getFun(String id) throws CannotFindSymbolException{ 
+  public ASTFun getFun(String id, int line, int column) throws CannotFindSymbolException{ 
     if (funs.containsKey(id)) return funs.get(id);
     throw new CannotFindSymbolException(id, line, column);
   }

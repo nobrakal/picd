@@ -1,5 +1,6 @@
 Var x = 50;
 Begin
+  Var z = 0;
   Var y = 100;
   DrawRect(x,y,50,50,#FF0000);
 End;
