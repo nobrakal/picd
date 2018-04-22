@@ -1,6 +1,7 @@
 package src.parsers;
 
 import java.io.IOException;
+import java.io.File;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.awt.Shape;
@@ -9,6 +10,7 @@ import java.awt.Color;
 import src.token.*;
 import src.exceptions.*;
 import src.ast.*;
+import src.Env;
 
 public class ASTParser extends Parser<Void> {
 
@@ -22,8 +24,8 @@ public class ASTParser extends Parser<Void> {
     funParser = new FunParser(this);
   }
 
-  public AST<Void> parse () throws Exception {
-    return new ASTSequence(sequence());
+  public ASTModule parse () throws Exception {
+    return new ASTModule(sequence());
   }
 
   private LinkedList<AST<Void>> sequence () throws Exception {
@@ -51,6 +53,7 @@ public class ASTParser extends Parser<Void> {
     else if(r.are(Sym.CONST, Sym.VAR)) return declaration();
     else if(r.is(String.class)) return affectation();
     else if(r.is(Sym.FUN)) return fundec();
+    else if (r.is(Sym.SLEEP)) return sleep();
     else if(r.is(Sym.IF)){
       r.eat(Sym.IF);
       AST<Integer> cond = parserExpr.parse(Sym.THEN);
@@ -63,7 +66,7 @@ public class ASTParser extends Parser<Void> {
       return new ASTWhile(new ASTBoolean(cond), instruction());
     } else if(r.is(Sym.RUN)){
       r.eat(Sym.RUN);
-      String id = r.pop(String.class).getObject();
+      Token<String> id = r.pop(String.class);
       r.eat(Sym.LPAR);
       ArrayList<AST<Integer>> res = new ArrayList<>();
       while(!r.is(Sym.RPAR)){
@@ -73,7 +76,15 @@ public class ASTParser extends Parser<Void> {
         res.add(parserExpr.parse());
       }  
       r.eat(Sym.RPAR);
-      return new ASTRun(id,res);
+      return new ASTRun(id.getObject(),res, id.line, id.column);
+    } else if(r.is(Sym.IMPORT)){
+      r.eat(Sym.IMPORT);
+      String path = r.pop(String.class).getObject();
+      LookAhead1 oldr = Parser.r;
+      Parser.r = new LookAhead1(path);
+      ASTModule mainImported = parse();
+      Parser.r = oldr;
+      return mainImported;
     }
     return beginEnd();
   }
@@ -98,10 +109,10 @@ public class ASTParser extends Parser<Void> {
   }
 
   private AST<Void> affectation () throws Exception {
-    String id = r.pop(String.class).getObject();
+    Token<String> id = r.pop(String.class);
     r.eat(Sym.EQ);
     AST<Integer> value = parserExpr.parse();
-    return new ASTVar.VarAffectation(id, value);
+    return new ASTVar.VarAffectation(id.getObject(), value, id.line, id.column);
   }
 
   public ASTSequence beginEnd() throws Exception{
@@ -114,5 +125,10 @@ public class ASTParser extends Parser<Void> {
   private ASTFun fundec() throws Exception{
     r.eat(Sym.FUN);
     return (ASTFun)funParser.parse();
+  }
+
+  private AST<Void> sleep () throws Exception {
+    r.eat(Sym.SLEEP);
+    return new ASTSleep(parserExpr.parse());
   }
 }

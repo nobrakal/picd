@@ -49,7 +49,7 @@ import java.util.function.BiFunction;
 integer = [0-9]+
 hex     = [0-9A-F]
 color   = #{hex}{6}
-id      = [a-z][a-zA-Z_]*
+id      = [a-z/][a-zA-Z_/]*
 
 LineTerminator = \r|\n|\r\n
 WhiteSpace     = {LineTerminator} | [ \t\f]
@@ -62,8 +62,10 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 "Rect"       { return token(Sym.RECT);}
 "Circle"     { return token(Sym.CIRCLE);}
 
-"Fun"       { return token(Sym.FUN);}
-"Run"     { return token(Sym.RUN);}
+"Import"     { return token(Sym.IMPORT);}
+"Fun"        { return token(Sym.FUN);}
+"Run"        { return token(Sym.RUN);}
+"Sleep"      { return token(Sym.SLEEP);}
 
 "If"         { return token(Sym.IF);}
 "Then"       { return token(Sym.THEN);}

@@ -14,7 +14,7 @@ public class ASTFun extends AST<Void> {
     this.id=id;
     args = ids;
     this.asts=asts;
-  }
+   }
 
   public Void eval (Env e) throws Exception {
     e.addFun(this.id,this);

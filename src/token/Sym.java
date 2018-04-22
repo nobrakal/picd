@@ -30,5 +30,7 @@ public enum Sym {
   NOT,
 
   FUN,
-  RUN
+  RUN,
+  IMPORT,
+  SLEEP
 };

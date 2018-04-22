@@ -12,8 +12,10 @@ class ParserExpr extends Parser<Integer> {
       throws Exception, UnexpectedSymbolException, CannotFindSymbolException, IOException {
     if(r.is(Integer.class))
       return new ExprLeaf.Int(r.pop(Integer.class).getObject());
-    if(r.is(String.class))
-      return new ExprLeaf.Id(r.pop(String.class).getObject());
+    if(r.is(String.class)){
+      Token<String> tok = r.pop(String.class);
+      return new ExprLeaf.Id(tok.getObject(), tok.line, tok.column);
+    }
     if(r.is(Sym.NOT)){
       r.eat(Sym.NOT);
       AST<Integer> res = new ExprOp((a,b)-> a == b ? 1 : 0, "!", new ExprLeaf.Int(0), parse());
