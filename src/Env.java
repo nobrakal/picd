@@ -14,8 +14,6 @@ public class Env{
   private final HashMap<String, AtomicInteger> csts, vars;
   private final HashMap<String,ASTFun> funs;
 
-  private int line, column;
-
   public Env (Graphics2D g, HashMap<String, AtomicInteger> vars, HashMap<String, AtomicInteger> csts, HashMap<String,ASTFun> funs) {
     this.csts   = csts;
     this.vars   = vars;
@@ -28,7 +26,7 @@ public class Env{
   }
 
   private Env (Env e) {
-    this(e.g,new HashMap<>(e.csts),new HashMap<>(e.vars),new HashMap<>(e.funs));
+    this(e.g,new HashMap<>(e.vars),new HashMap<>(e.csts),new HashMap<>(e.funs));
   }
 
   public static Env mkPartialEnv(Env e){
