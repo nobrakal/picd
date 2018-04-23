@@ -48,9 +48,9 @@ public class ASTVar {
     private final int line, column;
     
     public VarAffectation(String id, AST<Integer> value, int line, int column) {
-     super(id,value);
-     this.line=line;
-     this.column=column;
+      super(id,value);
+      this.line   = line;
+      this.column = column;
     }
 
     public Void eval (Env e) throws Exception {

@@ -21,20 +21,20 @@ import java.util.function.BiFunction;
 
 %{
   public Token<Sym> token (Sym s) {
-    return new Token<Sym>(s, yyline, yycolumn);
+    return new Token<Sym>(s, yyline+1, yycolumn);
   }
 
   public TokenOp tokenOp(BiFunction<Integer,Integer,Integer> fun, String value){
-    return new TokenOp(fun, value, yyline, yycolumn);
+    return new TokenOp(fun, value, yyline+1, yycolumn);
   }
 
   public Token<?> token (Class<?> c, String value) throws LexerException {
-    if (c == Color.class) return new Token<Color>(new Color(Integer.decode(value)), yyline, yycolumn);
-    if (c == Integer.class) return new Token<Integer>(Integer.parseInt(value), yyline, yycolumn);
+    if (c == Color.class) return new Token<Color>(new Color(Integer.decode(value)), yyline+1, yycolumn);
+    if (c == Integer.class) return new Token<Integer>(Integer.parseInt(value), yyline+1, yycolumn);
     if (c == String.class){
-      return new Token<String>(value, yyline, yycolumn);
+      return new Token<String>(value, yyline+1, yycolumn);
     }
-    throw new LexerException("Unexcepted symbol "+c,yyline,yycolumn);
+    throw new LexerException("Unexcepted symbol "+c,yyline+1,yycolumn);
   }
 
   public int yyline(){
@@ -103,4 +103,4 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 {id}         { return token(String.class,yytext());}
 
 {WhiteSpace} {}
-[^] {throw new LexerException("Unknown char "+yytext(),yyline,yycolumn);}
+[^] {throw new LexerException("Unknown char "+yytext(),yyline+1,yycolumn);}
