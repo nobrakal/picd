@@ -43,10 +43,9 @@ class MyCanvas extends JComponent {
       Parser.init(fname);
       ASTParser parser = new ASTParser();
       ast = parser.parse();
-      System.out.println(ast);
     } catch(Exception e) {
       System.out.println(e);
-      e.printStackTrace();
+      // e.printStackTrace();
       System.exit(1);
     }
   }

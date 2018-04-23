@@ -13,7 +13,6 @@ public class ASTSequence extends AST<Void> {
 
   public Void eval (Env e) throws Exception {
     Env sub = e.clone();
-    System.out.println(asts);
     for(AST<Void> ast: asts) ast.eval(sub);
     return null;
   }
