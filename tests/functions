@@ -7,5 +7,3 @@ Fun simple () Begin
     End;
   DrawRect(50,50,50,50,#FF00FF);
 End;
-
-Run simple ();

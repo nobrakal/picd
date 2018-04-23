@@ -1,2 +1,2 @@
-Import tests/simple ;
-Run main/tests/simple ();
+Import tests/functions ;
+Run simple ();

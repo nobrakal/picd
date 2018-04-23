@@ -24,8 +24,8 @@ public class ASTParser extends Parser<Void> {
     funParser = new FunParser(this);
   }
 
-  public ASTSequence parse () throws Exception {
-    return new ASTSequence(sequence());
+  public ASTModule parse () throws Exception {
+    return new ASTModule(sequence());
   }
 
   private LinkedList<AST<Void>> sequence () throws Exception {
@@ -66,7 +66,7 @@ public class ASTParser extends Parser<Void> {
       return new ASTWhile(new ASTBoolean(cond), instruction());
     } else if(r.is(Sym.RUN)){
       r.eat(Sym.RUN);
-      String id = r.pop(String.class).getObject();
+      Token<String> id = r.pop(String.class);
       r.eat(Sym.LPAR);
       ArrayList<AST<Integer>> res = new ArrayList<>();
       while(!r.is(Sym.RPAR)){
@@ -76,15 +76,15 @@ public class ASTParser extends Parser<Void> {
         res.add(parserExpr.parse());
       }  
       r.eat(Sym.RPAR);
-      return new ASTRun(id,res);
+      return new ASTRun(id.getObject(),res, id.line, id.column);
     } else if(r.is(Sym.IMPORT)){
       r.eat(Sym.IMPORT);
       String path = r.pop(String.class).getObject();
       LookAhead1 oldr = Parser.r;
       Parser.r = new LookAhead1(path);
-      ASTSequence mainImported = parse();
+      ASTModule mainImported = parse();
       Parser.r = oldr;
-      return new ASTFun("main/"+path,mainImported,null);
+      return mainImported;
     }
     return beginEnd();
   }
@@ -109,10 +109,10 @@ public class ASTParser extends Parser<Void> {
   }
 
   private AST<Void> affectation () throws Exception {
-    String id = r.pop(String.class).getObject();
+    Token<String> id = r.pop(String.class);
     r.eat(Sym.EQ);
     AST<Integer> value = parserExpr.parse();
-    return new ASTVar.VarAffectation(id, value);
+    return new ASTVar.VarAffectation(id.getObject(), value, id.line, id.column);
   }
 
   public ASTSequence beginEnd() throws Exception{
