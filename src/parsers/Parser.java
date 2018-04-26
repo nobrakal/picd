@@ -9,12 +9,14 @@ import src.ast.*;
 public abstract class Parser<T> {
   
   protected static LookAhead1 r;
+  private static String filename;
 
   public abstract AST<T> parse() 
       throws Exception, UnexpectedSymbolException, IOException;
 
   public static void init (String filename) 
       throws Exception, IOException, LexerException {
+    Parser.filename = filename;
     r = new LookAhead1(filename);
   }
 
@@ -22,6 +24,10 @@ public abstract class Parser<T> {
     AST<T> ast = parse();
     r.eat(s);
     return ast;
+  }
+
+  public static String getCurrentFile () {
+    return filename;
   }
 }
 

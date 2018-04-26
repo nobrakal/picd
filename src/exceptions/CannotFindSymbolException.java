@@ -7,6 +7,7 @@ import src.token.Token;
 public class CannotFindSymbolException extends ParserException {
 
   public CannotFindSymbolException (String str, int line, int column) {
-    super ("Cannot find symbol "+str, line, column);
+    super ("Unknow symbol",
+           "Could not find symbol " + str, line, column);
   }
 }

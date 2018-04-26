@@ -7,12 +7,14 @@ import src.token.Token;
 public class UnexpectedSymbolException extends ParserException {
 
   public UnexpectedSymbolException (Token<?> symbol, Class<?> expected) {
-    super ("\nUnexpected symbol: was expecting " + expected +
+    super ("\nUnexpected symbol",
+        "Was expecting " + expected +
         " and found " + symbol, symbol.line, symbol.column);
   }
 
   public UnexpectedSymbolException (Token<?> symbol, Sym expected) {
-    super ("\nUnexpected symbol: was expecting " + expected +
+    super ("\nUnexpected symbol",
+        "Was expecting " + expected +
         " and found " + symbol, symbol.line, symbol.column);
   }
 

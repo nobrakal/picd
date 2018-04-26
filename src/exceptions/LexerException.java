@@ -1,12 +1,12 @@
 package src.exceptions;
 
 @SuppressWarnings("serial")
-public class LexerException extends Exception {
+public class LexerException extends PrettyPrintException {
 
   public LexerException (String message, int line, int col) {
-    super ("\nSyntax error at line " + line +
+    super ("Syntax error at line " + line +
            " at column " + col +
-           ":\n" + message);
+           ":\n" + message, line, col);
   }
 
 }

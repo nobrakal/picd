@@ -7,6 +7,7 @@ import src.token.Token;
 public class AlreadyDefined extends ParserException {
 
   public AlreadyDefined (String str, int line, int column) {
-    super ("Already defined symbol "+str, line, column);
+    super ("Already defined symbol", 
+            str + " is already defined", line, column);
   }
 }

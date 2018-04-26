@@ -44,7 +44,7 @@ class MyCanvas extends JComponent {
       ASTParser parser = new ASTParser();
       ast = parser.parse();
     } catch(Exception e) {
-      System.out.println(e);
+      System.out.println(e.getMessage());
       // e.printStackTrace();
       System.exit(1);
     }
@@ -55,7 +55,7 @@ class MyCanvas extends JComponent {
     try {
       ast.eval(new Env((Graphics2D)g));
     } catch (Exception e) {
-      System.err.println("Error on execution: " + e);
+      System.err.println(e.getMessage());
       System.exit(1);
     }
   }
