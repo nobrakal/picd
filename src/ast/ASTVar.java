@@ -27,6 +27,10 @@ public class ASTVar {
       return null;
     }
 
+    public String compile () throws Exception {
+      return "final int " + id + " = " + value.compile() + ";";
+    }
+
 
   }
 
@@ -39,6 +43,10 @@ public class ASTVar {
     public Void eval (Env e) throws Exception {
       e.addVar(id, value.eval(e));
       return null;
+    }
+
+    public String compile () throws Exception {
+      return "int " + id + " = " + value.compile() + ";";
     }
 
   }
@@ -56,6 +64,10 @@ public class ASTVar {
     public Void eval (Env e) throws Exception {
       e.setVar(id, value.eval(e), line, column);
       return null;
+    }
+
+    public String compile () throws Exception {
+      return id + " = " + value.compile() + ";";
     }
   }
 }

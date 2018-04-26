@@ -19,7 +19,7 @@ endif
 
 all :
 	@mkdir -p $(BIN_FOLDER)
-	@jflex -d src/ flex/Lexer.flex
+	@jflex -d src/ assets/Lexer.flex
 	@find -name "*.java" > sources.txt
 	@javac -cp $(DEPS_FOLDER) -d $(BIN_FOLDER) @sources.txt -Xlint
 	@echo "Main-Class: "$(MAIN_PATH_MANIFEST) > $(MANIFEST)

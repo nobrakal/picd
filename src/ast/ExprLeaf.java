@@ -2,9 +2,9 @@ package src.ast;
 
 import src.Env;
 
-public class ExprLeaf {
+public abstract class ExprLeaf extends AST<Integer> {
 
-  public static class Int extends AST<Integer>{
+  public static class Int extends ExprLeaf {
     public final int val;
 
     public Int(int val){
@@ -21,7 +21,7 @@ public class ExprLeaf {
 
   }
 
-  public static class Id extends AST<Integer>{
+  public static class Id extends ExprLeaf {
 
     public final String id;
     public final int line,column;
@@ -40,5 +40,9 @@ public class ExprLeaf {
       return id;
     }
 
+  }
+
+  public String compile () {
+    return toString();
   }
 }

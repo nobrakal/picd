@@ -24,8 +24,14 @@ public class ASTShape extends AST<Shape> {
     return shapeb.eval(a.eval(e), b.eval(e), c.eval(e), d.eval(e));
   }
 
-  @FunctionalInterface
   public interface ShapeBuilder{
     public Shape eval(double a, double b, double c, double d);
+
+    public String compile (AST<Integer> a, AST<Integer> b, AST<Integer> c, AST<Integer> d) throws Exception;
   }
+
+  public String compile () throws Exception {
+    return shapeb.compile(a, b, c, d);
+  }
+
 }

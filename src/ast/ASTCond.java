@@ -19,4 +19,10 @@ public class ASTCond extends AST<Void>{
     else otherwise.eval(e);
     return null;
   }
+
+  public String compile () throws Exception {
+    return "if (" + cond.compile() + ") {" + 
+           ifTrue.compile() + "} else {" + 
+           otherwise.compile() + "}";
+  }
 }

@@ -24,4 +24,8 @@ public class ASTFun extends AST<Void> {
   public void run (Env e) throws Exception{
     asts.eval(e);
   }
+
+  public String compile () {
+    return "/* here declare " + id + "func */";
+  }
 }

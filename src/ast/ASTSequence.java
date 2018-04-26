@@ -17,4 +17,11 @@ public class ASTSequence extends AST<Void> {
     return null;
   }
 
+  public String compile () throws Exception {
+    String ret = "";
+    for (AST<Void> ast: asts)
+      ret += ast.compile();
+    return ret;
+  }
+
 }

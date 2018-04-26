@@ -24,4 +24,9 @@ public class ExprOp extends AST<Integer> {
   public String toString(){
     return left+str+right;  
   }
+
+  public String compile () {
+    return toString();
+  }
+
 }

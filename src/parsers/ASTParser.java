@@ -93,7 +93,7 @@ public class ASTParser extends Parser<Void> {
     // assert Sym.DRAW or Sym.FILL
     boolean draw = r.is(Sym.DRAW);
     r.eat();
-    AST<Shape> shp = shapeParser.parse();
+    ASTShape shp = (ASTShape)shapeParser.parse();
     return draw ? new ASTDraw(shp) : new ASTFill(shp);
   }
 

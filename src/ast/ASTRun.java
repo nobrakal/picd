@@ -11,10 +11,10 @@ public class ASTRun extends AST<Void> {
   private final int line, column;
 
   public ASTRun (String id, ArrayList<AST<Integer>> args, int line, int column) {
-    this.id=id;
-    this.realArgs=args;
-    this.line=line;
-    this.column=column;
+    this.id       = id;
+    this.realArgs = args;
+    this.line     = line;
+    this.column   = column;
   }
 
   public Void eval (Env e) throws Exception {
@@ -25,5 +25,14 @@ public class ASTRun extends AST<Void> {
     }
     astf.run(newenv);
     return null;
+  }
+
+  public String compile () throws Exception {
+    String args = "(";
+    for (int i = 0; i < realArgs.size() - 1; i++)
+      args += realArgs.get(i).compile() + ",";
+    args += realArgs.get(realArgs.size() - 1) + ");";
+
+    return id + args;
   }
 }

@@ -19,4 +19,10 @@ public class ASTWhile extends AST<Void> {
     return null;
   }
 
+  public String compile () throws Exception {
+    return "while (" + cond.compile() + ") {" +
+              loop.compile() +
+            "}"; 
+  }
+
 }

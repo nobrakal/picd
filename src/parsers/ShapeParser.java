@@ -29,9 +29,9 @@ public class ShapeParser extends Parser<Shape> {
       AST<Integer> rad = expr.parse(Sym.COMA);
       Color c = r.pop(Color.class).getObject();
       r.eat(Sym.RPAR);
-      return new ASTShape(Ellipse2D.Double::new,
+      return new ASTShape(new Ellipse2DBuilder(),
                   new ExprOp((a,b)->a-b,"-",x,rad),
-                  new ExprOp((a,b) -> a-b,"-",y,rad),
+                  new ExprOp((a,b)->a-b,"-",y,rad),
                   new ExprOp((a,b)->a*b,"*", new ExprLeaf.Int(2),rad),
                   new ExprOp((a,b)->a*b,"*",new ExprLeaf.Int(2),rad),c);
     }
@@ -44,6 +44,34 @@ public class ShapeParser extends Parser<Shape> {
     AST<Integer> height = expr.parse(Sym.COMA);
     Color c = r.pop(Color.class).getObject();
     r.eat(Sym.RPAR);
-    return new ASTShape(Rectangle2D.Double::new,x, y, width, height,c);
+    return new ASTShape(new Rectangle2DBuilder(), x, y, width, height,c);
+  }
+
+  private class Ellipse2DBuilder implements ASTShape.ShapeBuilder {
+
+    public Shape eval(double a, double b, double c, double d) {
+      return new Ellipse2D.Double(a, b, c, d);
+    }
+
+    public String compile (AST<Integer> a, AST<Integer> b, AST<Integer> c, AST<Integer> d) throws Exception {
+      return "Oval(" + a.compile() + "," +
+                       b.compile() + "," +
+                       c.compile() + "," + 
+                       d.compile() + ");";
+    }
+  }
+
+  private class Rectangle2DBuilder implements ASTShape.ShapeBuilder {
+
+    public Shape eval (double a, double b, double c, double d) {
+      return new Rectangle2D.Double(a, b, c, d);
+    }
+
+    public String compile (AST<Integer> a, AST<Integer> b, AST<Integer> c, AST<Integer> d) throws Exception {
+      return "Rect(" + a.compile() + "," +
+                       b.compile() + "," +
+                       c.compile() + "," + 
+                       d.compile() + ");";
+    }
   }
 }

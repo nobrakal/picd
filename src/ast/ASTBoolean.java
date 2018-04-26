@@ -14,4 +14,8 @@ public class ASTBoolean extends AST<Boolean> {
     return expr.eval(e) != 0;
   }
 
+  public String compile () throws Exception {
+    return expr.compile() + "!= 0";
+  }
+
 }
