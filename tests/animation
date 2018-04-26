@@ -1,8 +1,0 @@
-Var pos = 0;
-
-While (pos < 10) Do
-Begin
-    FillRect(pos, pos, 100, 100, #000000);
-    pos = (pos + 1);
-    Sleep 100;
-End;
