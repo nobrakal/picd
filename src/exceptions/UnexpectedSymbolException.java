@@ -9,13 +9,13 @@ public class UnexpectedSymbolException extends ParserException {
   public UnexpectedSymbolException (Token<?> symbol, Class<?> expected) {
     super ("\nUnexpected symbol",
         "Was expecting " + expected +
-        " and found " + symbol, symbol.line, symbol.column);
+        " and found " + symbol, symbol.line, symbol.column, 1);
   }
 
   public UnexpectedSymbolException (Token<?> symbol, Sym expected) {
     super ("\nUnexpected symbol",
         "Was expecting " + expected +
-        " and found " + symbol, symbol.line, symbol.column);
+        " and found " + symbol, symbol.line, symbol.column, 1);
   }
 
 }

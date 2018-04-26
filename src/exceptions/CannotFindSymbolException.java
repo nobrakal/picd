@@ -6,8 +6,8 @@ import src.token.Token;
 @SuppressWarnings("serial")
 public class CannotFindSymbolException extends ParserException {
 
-  public CannotFindSymbolException (String str, int line, int column) {
+  public CannotFindSymbolException (String str, int line, int column, int length) {
     super ("Unknow symbol",
-           "Could not find symbol " + str, line, column);
+           "Could not find symbol " + str, line, column, length);
   }
 }
