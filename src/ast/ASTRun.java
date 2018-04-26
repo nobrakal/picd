@@ -33,7 +33,7 @@ public class ASTRun extends AST<Void> {
   public void compile (EnvCompiler e) throws Exception {
     if (!e.isFunc(id))
       throw new CannotFindSymbolException(id, line, column);
-    e.code += id + "(";
+    e.code += id + "(g" + ((realArgs.size() != 0)?",":"");
     for (int i = 0; i < realArgs.size(); i++) {
       realArgs.get(i).compile(e);
       e.code += (i == realArgs.size() - 1 ? "" : ",");
