@@ -53,7 +53,6 @@ public class ASTParser extends Parser<Void> {
     else if(r.are(Sym.CONST, Sym.VAR)) return declaration();
     else if(r.is(String.class)) return affectation();
     else if(r.is(Sym.FUN)) return fundec();
-    else if (r.is(Sym.SLEEP)) return sleep();
     else if(r.is(Sym.IF)){
       r.eat(Sym.IF);
       AST<Integer> cond = parserExpr.parse(Sym.THEN);
@@ -101,11 +100,12 @@ public class ASTParser extends Parser<Void> {
     // assert Sym.VAR or Sym.CONST
     boolean cst = r.is(Sym.CONST);
     r.eat();
-    String id = r.pop(String.class).getObject();
+    Token<String> token = r.pop(String.class);
+    String id = token.getObject();
     r.eat(Sym.EQ);
     AST<Integer> value = parserExpr.parse();
-    return cst ? new ASTVar.ConstDeclaration(id, value) : 
-                 new ASTVar.VarDeclaration(id, value); 
+    return cst ? new ASTVar.ConstDeclaration(id, value, token.line, token.column) : 
+                 new ASTVar.VarDeclaration(id, value, token.line, token.column);
   }
 
   private AST<Void> affectation () throws Exception {
@@ -127,8 +127,4 @@ public class ASTParser extends Parser<Void> {
     return (ASTFun)funParser.parse();
   }
 
-  private AST<Void> sleep () throws Exception {
-    r.eat(Sym.SLEEP);
-    return new ASTSleep(parserExpr.parse());
-  }
 }

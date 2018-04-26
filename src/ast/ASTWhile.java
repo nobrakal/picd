@@ -1,6 +1,7 @@
 package src.ast;
 
 import src.Env;
+import src.EnvCompiler;
 
 @SuppressWarnings("serial")
 public class ASTWhile extends AST<Void> {
@@ -19,10 +20,12 @@ public class ASTWhile extends AST<Void> {
     return null;
   }
 
-  public String compile () throws Exception {
-    return "while (" + cond.compile() + ") {" +
-              loop.compile() +
-            "}"; 
+  public void compile (EnvCompiler e) throws Exception {
+    e.code += "while (";
+    cond.compile(e);
+    e.code += ") {";
+    loop.compile(e);
+    e.code += "}";
   }
 
 }

@@ -1,6 +1,7 @@
 package src.ast;
 
 import src.Env;
+import src.EnvCompiler;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -8,12 +9,12 @@ public class ASTFun extends AST<Void> {
 
   private final String id;
   public final ArrayList<String> args; 
-  private final ASTSequence asts;
+  public final ASTSequence asts;
 
   public ASTFun (String id, ASTSequence asts, ArrayList<String> ids) {
-    this.id=id;
-    args = ids;
-    this.asts=asts;
+    this.id   = id;
+    args      = ids;
+    this.asts = asts;
    }
 
   public Void eval (Env e) throws Exception {
@@ -25,7 +26,7 @@ public class ASTFun extends AST<Void> {
     asts.eval(e);
   }
 
-  public String compile () {
-    return "/* here declare " + id + "func */";
+  public void compile (EnvCompiler e) {
+    e.addFun(id, this);
   }
 }

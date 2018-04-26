@@ -4,6 +4,7 @@ import java.awt.Shape;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import src.Env;
+import src.EnvCompiler;
 
 public class ASTShape extends AST<Shape> {
   public final ShapeBuilder shapeb;
@@ -27,11 +28,11 @@ public class ASTShape extends AST<Shape> {
   public interface ShapeBuilder{
     public Shape eval(double a, double b, double c, double d);
 
-    public String compile (AST<Integer> a, AST<Integer> b, AST<Integer> c, AST<Integer> d) throws Exception;
+    public void compile (EnvCompiler e, AST<Integer> a, AST<Integer> b, AST<Integer> c, AST<Integer> d) throws Exception;
   }
 
-  public String compile () throws Exception {
-    return shapeb.compile(a, b, c, d);
+  public void compile (EnvCompiler e) throws Exception {
+    shapeb.compile(e, a, b, c, d);
   }
 
 }

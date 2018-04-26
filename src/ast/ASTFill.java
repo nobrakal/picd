@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import java.awt.Shape;
 import src.Env;
+import src.EnvCompiler;
 
 public class ASTFill extends AST<Void> {
 
@@ -18,9 +19,9 @@ public class ASTFill extends AST<Void> {
     return null;
   }
 
-  public String compile () throws Exception {
-    return getColor(is.color) +
-           "g.fill" + is.compile();
+  public void compile (EnvCompiler e) throws Exception {
+    e.code += getColor(is.color) + "g.fill";
+    is.compile(e);
   }
 
   public static String getColor (Color c) {

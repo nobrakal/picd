@@ -2,6 +2,7 @@ package src.ast;
 
 import java.awt.Shape;
 import src.Env;
+import src.EnvCompiler;
 
 public class ASTDraw extends AST<Void> {
 
@@ -16,8 +17,8 @@ public class ASTDraw extends AST<Void> {
     return null;
   }
 
-  public String compile () throws Exception {
-    return ASTFill.getColor(is.color)+
-           "g.draw" + is.compile();
+  public void compile (EnvCompiler e) throws Exception {
+    e.code += ASTFill.getColor(is.color)+"g.draw";
+    is.compile(e);
   }
 }

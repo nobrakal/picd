@@ -3,6 +3,7 @@ package src.ast;
 import java.util.function.BiFunction;
 
 import src.Env;
+import src.EnvCompiler;
 
 public class ExprOp extends AST<Integer> {
 
@@ -25,8 +26,10 @@ public class ExprOp extends AST<Integer> {
     return left+str+right;  
   }
 
-  public String compile () {
-    return toString();
+  public void compile (EnvCompiler e) throws Exception {
+    left.compile(e);
+    e.code += str;
+    right.compile(e);
   }
 
 }

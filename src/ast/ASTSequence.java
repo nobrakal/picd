@@ -2,6 +2,7 @@ package src.ast;
 
 import java.util.LinkedList;
 import src.Env;
+import src.EnvCompiler;
 
 public class ASTSequence extends AST<Void> {
 
@@ -17,11 +18,11 @@ public class ASTSequence extends AST<Void> {
     return null;
   }
 
-  public String compile () throws Exception {
-    String ret = "";
+  public void compile (EnvCompiler e) throws Exception {
+    e.code += "{";
     for (AST<Void> ast: asts)
-      ret += ast.compile();
-    return ret;
+      ast.compile(e);
+    e.code += "}";
   }
 
 }

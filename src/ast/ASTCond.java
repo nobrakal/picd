@@ -1,6 +1,7 @@
 package src.ast;
 
 import src.Env;
+import src.EnvCompiler;
 
 @SuppressWarnings("serial")
 public class ASTCond extends AST<Void>{
@@ -20,9 +21,13 @@ public class ASTCond extends AST<Void>{
     return null;
   }
 
-  public String compile () throws Exception {
-    return "if (" + cond.compile() + ") {" + 
-           ifTrue.compile() + "} else {" + 
-           otherwise.compile() + "}";
+  public void compile (EnvCompiler e) throws Exception {
+    e.code +=  "if (";
+    cond.compile(e);
+    e.code += ") {";
+    ifTrue.compile(e);
+    e.code += "} else {";
+    otherwise.compile(e);
+    e.code += "}";
   }
 }

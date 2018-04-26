@@ -10,6 +10,7 @@ import java.awt.Color;
 import src.token.*;
 import src.exceptions.*;
 import src.ast.*;
+import src.EnvCompiler;
 
 public class ShapeParser extends Parser<Shape> {
 
@@ -53,11 +54,16 @@ public class ShapeParser extends Parser<Shape> {
       return new Ellipse2D.Double(a, b, c, d);
     }
 
-    public String compile (AST<Integer> a, AST<Integer> b, AST<Integer> c, AST<Integer> d) throws Exception {
-      return "Oval(" + a.compile() + "," +
-                       b.compile() + "," +
-                       c.compile() + "," + 
-                       d.compile() + ");";
+    public void compile (EnvCompiler e, AST<Integer> a, AST<Integer> b, AST<Integer> c, AST<Integer> d) throws Exception {
+      e.code += "Oval(";
+      a.compile(e);
+      e.code += ",";
+      b.compile(e);
+      e.code += ",";
+      c.compile(e);
+      e.code += ",";
+      d.compile(e);
+      e.code += ");";
     }
   }
 
@@ -67,11 +73,16 @@ public class ShapeParser extends Parser<Shape> {
       return new Rectangle2D.Double(a, b, c, d);
     }
 
-    public String compile (AST<Integer> a, AST<Integer> b, AST<Integer> c, AST<Integer> d) throws Exception {
-      return "Rect(" + a.compile() + "," +
-                       b.compile() + "," +
-                       c.compile() + "," + 
-                       d.compile() + ");";
+    public void compile (EnvCompiler e, AST<Integer> a, AST<Integer> b, AST<Integer> c, AST<Integer> d) throws Exception {
+      e.code += "Rect(";
+      a.compile(e);
+      e.code += ",";
+      b.compile(e);
+      e.code += ",";
+      c.compile(e);
+      e.code += ",";
+      d.compile(e);
+      e.code += ");";
     }
   }
 }

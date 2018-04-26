@@ -7,7 +7,7 @@ import src.parsers.Parser;
 public class PrettyPrintException extends Exception {
 
   public PrettyPrintException (String message, int line, int col, int length) {
-    super(message+"\n   "+getLine(line)+"\n   "+genColString(col, length));
+    super(message+"\n   "+Colors.bold(getLine(line))+"\n   "+genColString(col, length));
   }
 
   private static String getLine (int lineCount) {

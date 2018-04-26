@@ -3,6 +3,8 @@ import javax.swing.*;
 
 class Template extends JFrame {
 
+  @@funs@@
+
   private class DrawPane extends JPanel {
 
     public void paintComponent (Graphics g) {

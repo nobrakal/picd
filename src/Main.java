@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import src.parsers.*;
 import src.ast.AST;
+import src.ast.ASTFun;
 
 public class Main {
 
@@ -50,21 +51,40 @@ public class Main {
       while ((line = buff.readLine()) != null)
         javaTemplate += line + "\n";
 
-      String javaCode = javaTemplate.replaceAll("@@code@@", ast.compile());
+      EnvCompiler e = new EnvCompiler();
+      ast.compile(e);
+      String javaCode = javaTemplate.
+                          replaceAll("@@code@@", e.code).
+                          replaceAll("@@funs@@", funcs(e));
       
       PrintWriter writer = new PrintWriter("Template.java", "UTF-8");
       writer.println(javaCode);
       writer.close();
-
-      // stop to work here
-      ProcessBuilder builder = new ProcessBuilder("javac", "Template.java");
-      builder.redirectErrorStream(true);
-      final Process pr = builder.start();
-      watch(pr);
-
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      System.err.println(e.getMessage());
+      System.exit(1);
     }
+  }
+
+  private static String funcs (EnvCompiler e) throws Exception{
+    String funs = "";
+    for (String id: e.funs.keySet()) {
+      EnvCompiler ep = EnvCompiler.mkPartialEnvCompiler(e);
+      ASTFun fun = e.funs.get(id);
+      ep.code += "public static void " + id + "(Graphics g ";
+      for (int i = 0; i < fun.args.size(); i++) {
+        ep.code += ", int " + fun.args.get(i);
+        ep.addVar(fun.args.get(i));
+      }
+      ep.code += ")";
+
+      ep.code += "{";
+      fun.asts.compile(ep);
+      ep.code += "}";
+      funs += ep.code;
+    }
+
+    return funs;
   }
 }
 

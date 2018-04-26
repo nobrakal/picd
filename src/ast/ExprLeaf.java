@@ -1,6 +1,9 @@
 package src.ast;
 
+import src.exceptions.*;
+
 import src.Env;
+import src.EnvCompiler;
 
 public abstract class ExprLeaf extends AST<Integer> {
 
@@ -19,6 +22,10 @@ public abstract class ExprLeaf extends AST<Integer> {
       return val + "";
     }
 
+    public void compile(EnvCompiler e) throws Exception {
+      e.code += val + "";
+    }
+
   }
 
   public static class Id extends ExprLeaf {
@@ -27,9 +34,9 @@ public abstract class ExprLeaf extends AST<Integer> {
     public final int line,column;
 
     public Id (String id, int line, int column) {
-      this.id = id;
-      this.line=line;
-      this.column=column;
+      this.id     = id;
+      this.line   = line;
+      this.column = column;
     }
 
     public Integer eval (Env e) throws Exception {
@@ -40,9 +47,12 @@ public abstract class ExprLeaf extends AST<Integer> {
       return id;
     }
 
+    public void compile (EnvCompiler e) throws Exception {
+      if (!e.isVar(id))
+        throw new CannotFindSymbolException(id, line, column);
+      e.code += id;
+    }
+
   }
 
-  public String compile () {
-    return toString();
-  }
 }

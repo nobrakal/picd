@@ -1,8 +1,11 @@
 package src.ast;
 
-import src.Env;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import src.Env;
+import src.EnvCompiler;
+import src.exceptions.*;
 
 public class ASTRun extends AST<Void> {
 
@@ -27,12 +30,15 @@ public class ASTRun extends AST<Void> {
     return null;
   }
 
-  public String compile () throws Exception {
-    String args = "(";
-    for (int i = 0; i < realArgs.size() - 1; i++)
-      args += realArgs.get(i).compile() + ",";
-    args += realArgs.get(realArgs.size() - 1) + ");";
-
-    return id + args;
+  public void compile (EnvCompiler e) throws Exception {
+    if (!e.isFunc(id))
+      throw new CannotFindSymbolException(id, line, column);
+    e.code += id + "(";
+    for (int i = 0; i < realArgs.size(); i++) {
+      realArgs.get(i).compile(e);
+      e.code += (i == realArgs.size() - 1 ? "" : ",");
+    }
+    
+    e.code += ");";
   }
 }

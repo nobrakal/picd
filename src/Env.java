@@ -37,7 +37,7 @@ public class Env{
       throws CannotFindSymbolException { 
     if (vars.containsKey(id)) return vars.get(id).intValue();
     if (csts.containsKey(id)) return csts.get(id).intValue();
-    throw new CannotFindSymbolException(id, line, column, id.length());
+    throw new CannotFindSymbolException(id, line, column);
   }
 
   public void addVar(String id, int  value) {
@@ -47,7 +47,7 @@ public class Env{
   public void setVar (String id, int value, int line, int column)
       throws CannotFindSymbolException {
     if (!vars.containsKey(id))
-      throw new CannotFindSymbolException(id, line, column, id.length()); 
+      throw new CannotFindSymbolException(id, line, column); 
     vars.get(id).set(value);
   }
 
@@ -62,7 +62,7 @@ public class Env{
   public ASTFun getFun(String id, int line, int column)
       throws CannotFindSymbolException{ 
     if (funs.containsKey(id)) return funs.get(id);
-    throw new CannotFindSymbolException(id, line, column, id.length());
+    throw new CannotFindSymbolException(id, line, column);
   }
 
   public Env clone () {

@@ -1,6 +1,7 @@
 package src.ast;
 
 import src.Env;
+import src.EnvCompiler;
 
 public class ASTBoolean extends AST<Boolean> {
 
@@ -14,8 +15,9 @@ public class ASTBoolean extends AST<Boolean> {
     return expr.eval(e) != 0;
   }
 
-  public String compile () throws Exception {
-    return expr.compile() + "!= 0";
+  public void compile (EnvCompiler e) throws Exception {
+    expr.compile(e);
+    e.code += "!= 0";
   }
 
 }
