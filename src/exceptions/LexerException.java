@@ -4,9 +4,9 @@ package src.exceptions;
 public class LexerException extends PrettyPrintException {
 
   public LexerException (String message, int line, int col) {
-    super ("Syntax error at line " + line +
+    super (Colors.fail("Syntax error") + " at line " + line +
            " at column " + col +
-           ":\n" + message, line, col);
+           ":\n" + Colors.warning(message), line, col);
   }
 
 }
