@@ -37,7 +37,7 @@ public class Main {
     System.out.println("Commands:");
     System.out.println("build   compile the file to java code");
     System.out.println("run     inteprete the file and directly run the code");
-    System.exit(-1);
+    System.exit(1);
   }
 
   private static void build (String fname) {
@@ -60,6 +60,15 @@ public class Main {
       PrintWriter writer = new PrintWriter("Template.java", "UTF-8");
       writer.println(javaCode);
       writer.close();
+
+      Runtime rt = Runtime.getRuntime();
+      Process p = rt.exec("javac Template.java");
+
+      int exitCode = p.waitFor();
+      if (exitCode != 0)
+        throw new Exception("Error on compilation");
+
+      rt.exec("rm Template.java");
     } catch (Exception e) {
       System.err.println(e.getMessage());
       System.exit(1);
