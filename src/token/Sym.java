@@ -32,5 +32,5 @@ public enum Sym {
   FUN,
   RUN,
   IMPORT,
-  SLEEP
+  EOF
 };

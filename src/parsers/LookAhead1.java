@@ -22,7 +22,7 @@ public class LookAhead1 {
   }
 
   public boolean is (Class<?> c) {
-    return c.isInstance(current.getObject());
+    return current != null && c.isInstance(current.getObject());
   }
 
   public boolean is (Sym s){

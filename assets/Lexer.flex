@@ -19,6 +19,11 @@ import java.util.function.BiFunction;
     LexerException
 %yylexthrow}
 
+%eofval{
+  return token(Sym.EOF);
+%eofval}
+%eofclose
+
 %{
   public Token<Sym> token (Sym s) {
     return new Token<Sym>(s, yyline+1, yycolumn);
