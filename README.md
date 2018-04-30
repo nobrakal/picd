@@ -48,4 +48,4 @@ Lancez `make` pour compiler le logiciel
 `java -jar picd.jar [run|build] fichier`
 
 * L'option run interprète le fichier
-* L'option build va construire le programme java associé dans un fichier Template.java
+* L'option build va construire le programme java associé, et le compiler. Vous pourrez le lancer avec `java Template`
