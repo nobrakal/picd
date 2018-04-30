@@ -25,7 +25,7 @@ public class ASTParser extends Parser<Void> {
   }
 
   public ASTModule parse () throws Exception {
-    return new ASTModule(sequence());
+    return new ASTModule(sequence(Sym.EOF));
   }
 
   private LinkedList<AST<Void>> sequence () throws Exception {
