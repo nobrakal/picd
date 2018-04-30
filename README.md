@@ -34,7 +34,7 @@ expr -> nombre | (expr opérateur expr) | "True" | "False" | ! expr | identifica
 ### Ajouts
 
 * Les boucles while 
-* Les booléens (traduit en terme d'entiers, "True" étant 0 et "False" différent de 0)
+* Les booléens (traduit en terme d'entiers, "True" étanti différent 1 et "False" étant 0 )
 * Les opérations booléennes Et ("&"), Ou ("|") et Non ("!")
 * Les fonctions, sans valeurs de retour, définnissables via le mot-clé "Fun", et lançable avec le mot-clé "Run".
 * L'import de fichier (c'est à dire des fonctions qu'il contient), via le mot-clé "Import"
